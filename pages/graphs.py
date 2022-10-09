@@ -658,7 +658,7 @@ def display_choropleth(sector):
     Input("sheet", "value"), 
     Input("y-axis", "value"))
 def display_area(sheet,y):
-    df = pd.read_excel(io= "~/git/Data-Science-Project-Group-2/TeemusWork/teemusData.xls", sheet_name= sheet).T
+    df = pd.read_excel(io= f"{dataPath}/teemusData.xls", sheet_name= sheet).T
     df.columns = df.iloc[0]
     df = df[1:]
     fig = px.area(
