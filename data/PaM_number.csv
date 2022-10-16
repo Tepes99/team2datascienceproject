@@ -1,0 +1,31 @@
+Country,Total,code,Energy,Waste,Agriculture & Land,Industry,Transportation,Other
+Belgium,215,BEL,113,4,15,8,57,18
+France,186,FRA,62,15,42,7,48,12
+Slovenia,132,SVN,64,7,19,2,26,14
+Spain,113,ESP,41,5,11,5,35,16
+Croatia,113,HRV,46,4,23,8,13,19
+Lithuania,111,LTU,32,5,30,8,36,0
+Denmark,109,DNK,37,22,22,3,25,0
+Netherlands,94,NLD,49,0,16,2,13,14
+Romania,92,ROU,23,10,15,3,16,25
+Latvia,91,LVA,37,3,38,1,6,6
+Hungary,88,HUN,22,7,15,0,17,27
+Finland,80,FIN,42,6,8,6,13,5
+Germany,78,DEU,29,3,8,12,25,1
+Luxembourg,73,LUX,29,13,15,1,11,4
+Malta,70,MLT,26,6,7,6,23,2
+Norway,69,NOR,10,5,14,9,19,12
+Estonia,66,EST,20,4,24,7,11,0
+Iceland,61,ISL,14,5,11,8,13,10
+Ireland,61,IRL,51,1,1,1,7,0
+Sweden,54,SWE,16,4,8,3,15,8
+Czech Republic,48,Unknown code,21,2,9,3,10,3
+Poland,47,POL,24,2,8,1,12,0
+Bulgaria,46,BGR,20,3,14,2,7,0
+Italy,46,ITA,25,0,2,0,15,4
+Slovakia,36,SVK,12,5,9,1,9,0
+Switzerland,35,CHE,6,2,8,4,9,6
+Portugal,30,PRT,12,1,9,2,6,0
+Austria,27,AUT,13,1,5,1,7,0
+Greece,23,GRC,10,2,5,1,5,0
+Cyprus,13,CYP,4,2,4,0,0,3

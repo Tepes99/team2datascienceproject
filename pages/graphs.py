@@ -15,13 +15,7 @@ dataPath = f"{mainDirectory[0:-5]}/data/"
 dash.register_page(__name__, path="/graphs")
 path = f"{dataPath}/EDGARv7.0_FT2021_fossil_CO2_booklet_2022.xlsx"
 # Daniel graph
-raw_data = pd.read_excel(
-    io=path,
-    sheet_name="fossil_CO2_by_sector_and_countr",
-)
-raw_data.drop(
-    columns=["Substance", "EDGAR Country Code"], inplace=True
-)  # drop unnecessary columns
+raw_data = pd.read_csv(f"{dataPath}CO2_by_sector_and_country.csv")
 daniel_scope = sorted([*set(raw_data["Country"])])
 daniel_scope.append("Global emissions")  # selectable countries + GLOBAL VIEW
 raw_data.fillna(0, inplace=True)  # replace unreported emissions with 0
@@ -76,11 +70,9 @@ region = [
 year = [{"label": str(c), "value": c} for c in df_CO2_country.columns[3:]]
 
 # Linh graph
-df_co2 = pd.read_excel(
-    f"{dataPath}co2_by_country.xlsx"
+df_co2 = pd.read_csv(
+    f"{dataPath}co2_by_country.csv"
 )
-df_co2 = df_co2.drop(columns=["Substance", "EDGAR Country Code"])
-df_co2 = df_co2.drop(columns=df_co2.columns[1:21])
 scope = list(df_co2["Country"].unique())
 
 df = df_co2.copy()
@@ -93,177 +85,15 @@ df = pd.melt(
 )
 year = set(df.Year.unique())
 
-df_GDP = pd.read_excel(
-    f"{dataPath}/GDP_by_country_current_international_dollar.xlsx",
-    skiprows=3,
+df_GDP = pd.read_csv(
+    f"{dataPath}/GDP_by_country_current_international_dollar.csv",
 )
-df_GDP = df_GDP.drop(columns=df_GDP.columns[1:34])
 
 
 #Selins graph
 
 #Preprocessing
-data=pd.read_excel(f"{dataPath}/PaM_number.xlsx")
-data =data.rename(columns={"Objective(s)_lookup_only4facets":"Sector"})
-
-for i in range(len(data)):
-    sector_name=data["Sector"][i]
-    if(isinstance(sector_name, str)):
-        if(sector_name.split()[0]=="Energy" or sector_name.split()[0]=="Energy:"):
-            data["Sector"][i] ="Energy"
-        elif(sector_name.split()[0]=="Agriculture" or sector_name.split()[0]=="Agriculture:" or sector_name.split()[0]=="Land" or sector_name.split()[0]=="Land:"):
-            data["Sector"][i] ="Agriculture & Land"
-        elif(sector_name.split()[0]=="Waste" or sector_name.split()[0]=="Waste:"):
-            data["Sector"][i] ="Waste"
-        elif(sector_name.split()[0]=="Transport" or sector_name.split()[0]=="Transport:"):
-            data["Sector"][i] ="Transportation"
-        elif(sector_name.split()[0]=="Industrial" or sector_name.split()[0]=="Industrial:"):
-            data["Sector"][i] ="Industry"
-        elif(sector_name.split()[0]=="Other"):
-            data["Sector"][i] ="Other"
-    else:
-         data["Sector"][i] ="Other"
-
-df=data["Country"].value_counts()
-df=df.reset_index()
-df.rename(columns={"index":"Country",
-                "Country":"Total"}
-          ,inplace=True)
-
-input_countries = df["Country"]
-countries = {}
-for country in pycountry.countries:
-    countries[country.name] = country.alpha_3
-
-codes = [countries.get(country, 'Unknown code') for country in input_countries]
-
-df["code"]=codes
-
-energy=[]
-for i in range(len(df)):
-    country_name=df["Country"][i]
-    df_coun=data[data["Country"]==country_name]
-    df_coun_value=df_coun["Sector"].value_counts()
-    df_coun_value=df_coun_value.reset_index()
-    df_coun_value.rename(columns={"index":"sector",
-                "Sector":"Number"}
-          ,inplace=True)
-    liste=df_coun_value["sector"].unique()
-    holder= -1
-    for i in range(len(liste)):
-        if (liste[i] == 'Energy'):
-            holder=i
-            break
-    if( holder != -1):
-            energy.append(df_coun_value["Number"][holder])
-    else:
-            energy.append(0)
-            
-agri_land=[]
-for i in range(len(df)):
-    country_name=df["Country"][i]
-    df_coun=data[data["Country"]==country_name]
-    df_coun_value=df_coun["Sector"].value_counts()
-    df_coun_value=df_coun_value.reset_index()
-    df_coun_value.rename(columns={"index":"sector",
-                "Sector":"Number"}
-          ,inplace=True)
-    liste=df_coun_value["sector"].unique()
-    holder= -1
-    for i in range(len(liste)):
-        if (liste[i] == "Agriculture & Land"):
-            holder=i
-            break
-    if( holder != -1):
-            agri_land.append(df_coun_value["Number"][holder])
-    else:
-            agri_land.append(0)
-
-waste=[]
-for i in range(len(df)):
-    country_name=df["Country"][i]
-    df_coun=data[data["Country"]==country_name]
-    df_coun_value=df_coun["Sector"].value_counts()
-    df_coun_value=df_coun_value.reset_index()
-    df_coun_value.rename(columns={"index":"sector",
-                "Sector":"Number"}
-          ,inplace=True)
-    liste=df_coun_value["sector"].unique()
-    holder= -1
-    for i in range(len(liste)):
-        if (liste[i] == 'Waste'):
-            holder=i
-            break
-    if( holder != -1):
-            waste.append(df_coun_value["Number"][holder])
-    else:
-            waste.append(0)
-            
-other=[]
-for i in range(len(df)):
-    country_name=df["Country"][i]
-    df_coun=data[data["Country"]==country_name]
-    df_coun_value=df_coun["Sector"].value_counts()
-    df_coun_value=df_coun_value.reset_index()
-    df_coun_value.rename(columns={"index":"sector",
-                "Sector":"Number"}
-          ,inplace=True)
-    liste=df_coun_value["sector"].unique()
-    holder= -1
-    for i in range(len(liste)):
-        if (liste[i] == 'Other'):
-            holder=i
-            break
-    if( holder != -1):
-            other.append(df_coun_value["Number"][holder])
-    else:
-            other.append(0)
-            
-transport=[]
-for i in range(len(df)):
-    country_name=df["Country"][i]
-    df_coun=data[data["Country"]==country_name]
-    df_coun_value=df_coun["Sector"].value_counts()
-    df_coun_value=df_coun_value.reset_index()
-    df_coun_value.rename(columns={"index":"sector",
-                "Sector":"Number"}
-          ,inplace=True)
-    liste=df_coun_value["sector"].unique()
-    holder= -1
-    for i in range(len(liste)):
-        if (liste[i] == 'Transportation'):
-            holder=i
-            break
-    if( holder != -1):
-            transport.append(df_coun_value["Number"][holder])
-    else:
-           transport.append(0)  
-indust=[]
-for i in range(len(df)):
-    country_name=df["Country"][i]
-    df_coun=data[data["Country"]==country_name]
-    df_coun_value=df_coun["Sector"].value_counts()
-    df_coun_value=df_coun_value.reset_index()
-    df_coun_value.rename(columns={"index":"sector",
-                "Sector":"Number"}
-          ,inplace=True)
-    liste=df_coun_value["sector"].unique()
-    holder= -1
-    for i in range(len(liste)):
-        if (liste[i] == 'Industry'):
-            holder=i
-            break
-    if( holder != -1):
-            indust.append(df_coun_value["Number"][holder])
-    else:
-           indust.append(0)  
-           
-df["Energy"]=energy
-df["Waste"]=waste
-df["Agriculture & Land"] = agri_land
-df["Industry"]=indust
-df["Transportation"]=transport
-df["Other"]=other
+df=pd.read_csv(f"{dataPath}/PaM_number.csv")
 
 
 #Teemus graph
