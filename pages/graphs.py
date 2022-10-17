@@ -23,7 +23,8 @@ df_co2_by_sector.fillna(0, inplace=True)  # replace unreported emissions with 0
 #  Hieu graph
 
 df_CO2_country = pd.read_excel(io=path, sheet_name="fossil_CO2_totals_by_country")
-
+##remove EU27 and global emission
+df_CO2_country = df_CO2_country.drop([210, 211, 212])
 nordic_countries = [
     "Denmark",
     "Finland",
@@ -420,7 +421,6 @@ def update_graph_co2_by_region(
         locationmode="country names",
         locations="Country",
         color=year_slctd,
-        range_color=[0, 6000],
         color_continuous_scale=px.colors.sequential.Aggrnyl,
         hover_data={"Country": False},
         labels={str(year_slctd): "CO2 emission"},
