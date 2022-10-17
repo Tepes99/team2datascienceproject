@@ -1,11 +1,11 @@
 import dash
-from dash import html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
-import pycountry_convert as pc
-import pycountry
-import plotly.express as px
 import numpy as np
 import pandas as pd
+import plotly.express as px
+import pycountry_convert as pc
+from dash import Input, Output, callback, dcc, html
+
 pd.options.mode.chained_assignment = None  # default='warn'
 import os
 
@@ -15,10 +15,10 @@ dataPath = f"{mainDirectory[0:-5]}/data/"
 dash.register_page(__name__, path="/graphs")
 path = f"{dataPath}/EDGARv7.0_FT2021_fossil_CO2_booklet_2022.xlsx"
 # Daniel graph
-raw_data = pd.read_csv(f"{dataPath}CO2_by_sector_and_country.csv")
-daniel_scope = sorted([*set(raw_data["Country"])])
+df_co2_by_sector = pd.read_csv(f"{dataPath}CO2_by_sector_and_country.csv")
+daniel_scope = sorted([*set(df_co2_by_sector["Country"])])
 daniel_scope.append("Global emissions")  # selectable countries + GLOBAL VIEW
-raw_data.fillna(0, inplace=True)  # replace unreported emissions with 0
+df_co2_by_sector.fillna(0, inplace=True)  # replace unreported emissions with 0
 
 #  Hieu graph
 
@@ -67,37 +67,27 @@ region = [
     ]
 ]
 
-year = [{"label": str(c), "value": c} for c in df_CO2_country.columns[3:]]
 
 # Linh graph
-df_co2 = pd.read_csv(
-    f"{dataPath}co2_by_country.csv"
-)
-scope = list(df_co2["Country"].unique())
+df_co2_change = pd.read_csv(f"{dataPath}co2_by_country.csv")
+scope = list(df_co2_change["Country"].unique())
 
-df = df_co2.copy()
-df = pd.melt(
-    df,
-    id_vars="Country",
-    value_vars=df.columns[1:],
-    var_name="Year",
-    value_name="Change in CO2 emissions",
-)
-year = set(df.Year.unique())
 
 df_GDP = pd.read_csv(
     f"{dataPath}/GDP_by_country_current_international_dollar.csv",
 )
 
 
-#Selins graph
+# Selins graph
 
-#Preprocessing
-df=pd.read_csv(f"{dataPath}/PaM_number.csv")
+# Preprocessing
+df_PaM = pd.read_csv(f"{dataPath}/PaM_number.csv")
 
 
-#Teemus graph
-teemusData = pd.read_excel(io= f"{dataPath}/teemusData.xls", sheet_name= "Total Greenhouse Gas Emission").T
+# Teemus graph
+teemusData = pd.read_excel(
+    io=f"{dataPath}/teemusData.xls", sheet_name="Total Greenhouse Gas Emission"
+).T
 teemusData.columns = teemusData.iloc[0]
 teemusData = teemusData[1:]
 
@@ -251,54 +241,83 @@ layout = html.Div(
                                 ),
                             ]
                         ),
-                    ], style={'order':3, 'margin':'50px'}
+                    ],
+                    style={"order": 3, "margin": "50px"},
+                ),
+                html.Div(
+                    [
+                        html.H1(
+                            "Number of Policies and measurements by Sector",
+                            style={"text-align": "center"},
+                        ),
+                        html.P("Select the Sector"),
+                        dcc.Dropdown(
+                            id="sector",
+                            options=[
+                                "Total",
+                                "Energy",
+                                "Waste",
+                                "Transportation",
+                                "Industry",
+                                "Agriculture & Land",
+                                "Other",
+                            ],
+                            multi=False,
+                            value="Total",
+                            style={"width": "60%"},
+                        ),
+                        dcc.Graph(id="selinsGraph"),
+                    ],
+                    style={"order": 4, "margin": "50px"},
+                ),
+                html.Div(
+                    [
+                        html.H1("Emissions by country", style={"text-align": "center"}),
+                        dbc.Label(
+                            "Choose between total emissions, per capita and per GDP"
+                        ),
+                        dbc.RadioItems(
+                            options=[
+                                {
+                                    "label": "Total CO2 Emission",
+                                    "value": "Total CO2 Emission",
+                                },
+                                {
+                                    "label": "CO2 Emissions Per Capita",
+                                    "value": "CO2 Emissions Per Capita",
+                                },
+                                {
+                                    "label": "CO2 Emissions Per GDP",
+                                    "value": "CO2 Emissions Per GDP",
+                                },
+                                {
+                                    "label": "Total Greenhouse Gas Emission",
+                                    "value": "Total Greenhouse Gas Emission",
+                                },
+                                {
+                                    "label": "Greenhouse Gas Emissions Per Capita",
+                                    "value": "Greenhouse Emissions Per Capita",
+                                },
+                                {
+                                    "label": "Greenhouse Gas Emissions Per GDP",
+                                    "value": "Greenhouse Emissions Per GDP",
+                                },
+                            ],
+                            value="Total Greenhouse Gas Emission",
+                            id="sheet",
+                        ),
+                        html.P("Select country:"),
+                        dcc.Dropdown(
+                            id="y-axis",
+                            options=list(teemusData.columns.values),
+                            value="Afghanistan",
+                        ),
+                        dcc.Graph(id="teemusGraph"),
+                    ],
+                    style={"order": 4, "margin": "50px"},
                 ),
             ],
             style={"display": "flex", "flex-direction": "column"},
-        ),
-         html.Div(
-            [
-                html.H1('Number of Policies and measurements by Sector',
-                style={"text-align": "center"}),
-
-                html.P("Select the Sector"),
-                dcc.Dropdown(id = 'sector',
-                                    options=["Total","Energy", "Waste", "Transportation","Industry","Agriculture & Land","Other"],
-                                    multi=False,
-                                    value = 'Total',
-                                    style={'width':'60%'}),       
-                dcc.Graph(id="selinsGraph")
-            ]
-        ),
-        html.Div(
-            [
-                html.H1("Emissions by country", 
-                style={"text-align": "center"}),
-                
-                dbc.Label("Choose between total emissions, per capita and per GDP"),
-                dbc.RadioItems(
-                    options=[
-                        {"label": "Total CO2 Emission", "value": "Total CO2 Emission"},
-                        {"label": "CO2 Emissions Per Capita", "value": "CO2 Emissions Per Capita"},
-                        {"label": "CO2 Emissions Per GDP", "value": "CO2 Emissions Per GDP"},
-                        {"label": "Total Greenhouse Gas Emission", "value": "Total Greenhouse Gas Emission"},
-                        {"label": "Greenhouse Gas Emissions Per Capita", "value": "Greenhouse Emissions Per Capita"},
-                        {"label": "Greenhouse Gas Emissions Per GDP", "value": "Greenhouse Emissions Per GDP"},
-                    ],
-                        value="Total Greenhouse Gas Emission",
-                        id="sheet",
-                ),
-
-
-
-                html.P("Select country:"),
-                    dcc.Dropdown(
-                        id='y-axis',
-                        options=list(teemusData.columns.values),
-                        value='Afghanistan'
-                    ),
-                dcc.Graph(id="teemusGraph"),
-            ]
         ),
     ],
 )
@@ -323,8 +342,8 @@ def update_output_div(input_value, activities):
 
 
 @callback(Output("sector_emissions_graph", "figure"), Input("daniel_scope", "value"))
-def update_graph(selection):
-    data = raw_data.copy()
+def update_graph_co2_by_sector(selection):
+    data = df_co2_by_sector.copy()
     if selection == "Global emissions":
         data.drop(columns=["Country"], inplace=True)  # not needed on global scope
         data = data.groupby(
@@ -378,7 +397,7 @@ def update_graph(selection):
         Input(component_id="year_slider", component_property="value"),
     ],
 )
-def update_graph(
+def update_graph_co2_by_region(
     region_slctd, year_slctd
 ):  # number of arguments is the same as the number of inputs
 
@@ -418,8 +437,8 @@ def update_graph(
     Input("scope", "value"),
     [Input("my-range-slider", "value")],
 )
-def update_graph(scope_selected, years_selected):
-    data = df_co2.copy()
+def update_graph_co2_vs_gdp_change(scope_selected, years_selected):
+    data = df_co2_change.copy()
     data1 = df_GDP.copy()
     ###
     data = data[data["Country"] == scope_selected]
@@ -469,28 +488,31 @@ def update_graph(scope_selected, years_selected):
 
     return fig
 
-@callback(
-    Output("selinsGraph", "figure"), 
-    Input("sector", "value"))
 
+@callback(Output("selinsGraph", "figure"), Input("sector", "value"))
 def display_choropleth(sector):
-    df_use = df # replace with your own data source
+    df_use = df_PaM  # replace with your own data source
     fig = px.choropleth(
-        df_use, color=sector,locations="code",
-        projection="mercator", range_color=[0, 220],scope="europe", hover_name="Country",color_continuous_scale="Viridis")
+        df_use,
+        color=sector,
+        locations="code",
+        projection="mercator",
+        range_color=[0, 220],
+        scope="europe",
+        hover_name="Country",
+        color_continuous_scale="Viridis",
+    )
     fig.update_geos(fitbounds="locations", visible=False)
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     return fig
 
 
 @callback(
-    Output("teemusGraph", "figure"),
-    Input("sheet", "value"), 
-    Input("y-axis", "value"))
-def display_area(sheet,y):
-    df = pd.read_excel(io= f"{dataPath}/teemusData.xls", sheet_name= sheet).T
+    Output("teemusGraph", "figure"), Input("sheet", "value"), Input("y-axis", "value")
+)
+def display_area(sheet, y):
+    df = pd.read_excel(io=f"{dataPath}/teemusData.xls", sheet_name=sheet).T
     df.columns = df.iloc[0]
     df = df[1:]
-    fig = px.area(
-        df, x=df.index, y=y)
+    fig = px.area(df, x=df.index, y=y)
     return fig
