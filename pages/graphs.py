@@ -98,36 +98,41 @@ teemusData = teemusData[1:]
 
 layout = html.Div(
     children=[
-        html.Div(
-            children="""
-        This is our Home page content.
-    """
-        ),
-        html.Div(
-            [
-                "How many friends do you have: ",
-                dcc.Input(id="my-input", value="", type="number"),
-            ]
-        ),
-        html.Div(
-            [
-                "What you can do:",
-                dcc.Checklist(
-                    [
-                        "Walk/cycle to work",
-                        "Use better energy home appliance",
-                        "Cook more at home to reduce food waste",
-                    ],
-                    [],
-                    id="activities",
-                ),
-            ]
-        ),
-        html.Br(),
-        html.Div(id="my-output"),
-        html.Div(
+        dbc.Row(
             [
                 html.Div(
+                    children="""
+        This is our Home page content.
+    """
+                ),
+                html.Div(
+                    [
+                        "How many friends do you have: ",
+                        dcc.Input(id="my-input", value="", type="number"),
+                    ]
+                ),
+                html.Div(
+                    [
+                        "What you can do:",
+                        dcc.Checklist(
+                            [
+                                "Walk/cycle to work",
+                                "Use better energy home appliance",
+                                "Cook more at home to reduce food waste",
+                            ],
+                            [],
+                            id="activities",
+                        ),
+                    ]
+                ),
+                html.Br(),
+                html.Div(id="my-output"),
+            ],
+            style={"textAlign": "center", "fontSize": 30},
+        ),
+        dbc.Row(
+            [
+                dbc.Row(
                     [
                         html.H1(
                             "CO2 emissions by sector", style={"text-align": "center"}
@@ -140,20 +145,16 @@ layout = html.Div(
                                     options=daniel_scope,
                                     multi=False,
                                     value="Global emissions",
-                                    style={"width": "60%"},
                                 ),
-                            ],
-                            style={"width": "50%", "margin-left": "50px"},
+                            ]
                         ),
                         html.Br(),
-                        dcc.Graph(
-                            id="sector_emissions_graph", style={"margin-left": "150px"}
-                        ),
+                        dcc.Graph(id="sector_emissions_graph", style={}),
                         html.Br(),
                     ],
-                    style={"order": 2, "margin": "50px"},
+                    style={"order": 2},
                 ),
-                html.Div(
+                dbc.Row(
                     [
                         html.H1(
                             "Worldwide CO2 emission", style={"text-align": "center"}
@@ -166,32 +167,23 @@ layout = html.Div(
                                     options=region,
                                     multi=False,
                                     value="World",
-                                    style={"width": "40%"},
                                 ),
                             ],
-                            style={"width": "50%", "margin-left": "50px"},
                         ),
                         html.Br(),
-                        dcc.Graph(
-                            id="co2_graph", figure={}, style={"margin-left": "150px"}
-                        ),
+                        dcc.Graph(id="co2_graph", figure={}, style={}),
                         html.Br(),
-                        html.Div(
-                            children=[
-                                dcc.Slider(
-                                    min=1970,
-                                    max=2021,
-                                    step=1,
-                                    value=2021,
-                                    marks=None,
-                                    tooltip={
-                                        "placement": "bottom",
-                                        "always_visible": False,
-                                    },
-                                    id="year_slider",
-                                )
-                            ],
-                            style={"width": "50%", "margin-left": "480px"},
+                        dcc.Slider(
+                            min=1970,
+                            max=2021,
+                            step=1,
+                            value=2021,
+                            marks=None,
+                            tooltip={
+                                "placement": "bottom",
+                                "always_visible": False,
+                            },
+                            id="year_slider",
                         ),
                         html.Div(
                             id="output_container",
@@ -199,9 +191,11 @@ layout = html.Div(
                             style={"text-align": "center", "font-size": "25px"},
                         ),
                     ],
-                    style={"order": 1, "margin": "50px"},
+                    style={
+                        "order": 1,
+                    },
                 ),
-                html.Div(
+                dbc.Row(
                     [
                         html.H1(
                             "Changes in CO2 emissions and GDP",
@@ -215,15 +209,13 @@ layout = html.Div(
                                     options=scope,
                                     multi=False,
                                     value="Finland",
-                                    style={"width": "60%"},
                                 ),
                             ],
-                            style={"width": "50%", "margin-left": "50px"},
                         ),
                         html.Br(),
                         dcc.Graph(
                             id="C02_change_emissions_graph",
-                            style={"margin-left": "150px"},
+                            style={},
                         ),
                         html.Br(),
                         html.Div(
@@ -235,17 +227,26 @@ layout = html.Div(
                                     step=1,
                                     value=[2000, 2021],
                                     marks={
-                                        int(i): "{}".format(i)
-                                        for i in range(1990, 2022)
+                                        1990: "1990",
+                                        1995: "1995",
+                                        2000: "2000",
+                                        2005: "2005",
+                                        2010: "2010",
+                                        2015: "2015",
+                                        2021: "2021",
+                                    },
+                                    tooltip={
+                                        "placement": "bottom",
+                                        "always_visible": True,
                                     },
                                     id="my-range-slider",
                                 ),
                             ]
                         ),
                     ],
-                    style={"order": 3, "margin": "50px"},
+                    style={"order": 3},
                 ),
-                html.Div(
+                dbc.Row(
                     [
                         html.H1(
                             "Number of Policies and measurements by Sector",
@@ -265,13 +266,12 @@ layout = html.Div(
                             ],
                             multi=False,
                             value="Total",
-                            style={"width": "60%"},
                         ),
                         dcc.Graph(id="selinsGraph"),
                     ],
-                    style={"order": 4, "margin": "50px"},
+                    style={"order": 4},
                 ),
-                html.Div(
+                dbc.Row(
                     [
                         html.H1("Emissions by country", style={"text-align": "center"}),
                         dbc.Label(
@@ -315,7 +315,7 @@ layout = html.Div(
                         ),
                         dcc.Graph(id="teemusGraph"),
                     ],
-                    style={"order": 4, "margin": "50px"},
+                    style={"order": 4},
                 ),
             ],
             style={"display": "flex", "flex-direction": "column"},
@@ -385,6 +385,7 @@ def update_graph_co2_by_sector(selection):
         fig = px.area(
             data, x="Year", y="CO2 emissions", color="Sector", template="none"
         )
+    fig.update_layout(legend={"orientation": "h", "y": -0.4})
     return fig
 
 
@@ -427,8 +428,11 @@ def update_graph_co2_by_region(
         hover_name="Country",
     )
     fig.update_layout(
-        margin={"r": 0, "t": 0, "l": 0, "b": 0}
-    )  # template in ["plotly", "plotly_white", "plotly_dark", "ggplot2", "seaborn", "simple_white", "none"]
+        autosize=False,
+        margin=dict(l=0, r=0, b=0, t=0, pad=4, autoexpand=True),
+        #     height=400,
+    )
+    fig.update_coloraxes(colorbar_orientation="h", colorbar_y=1)
     return container, fig
 
 
@@ -497,12 +501,12 @@ def display_choropleth(sector):
         color=sector,
         locations="code",
         projection="mercator",
-        range_color=[0, 220],
         scope="europe",
         hover_name="Country",
         color_continuous_scale="Viridis",
     )
     fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_coloraxes(colorbar_orientation="h", colorbar_y=1)
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     return fig
 
