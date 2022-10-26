@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 import pycountry_convert as pc
 import pycountry
 import plotly.express as px
+import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
@@ -271,6 +272,10 @@ teemusData = pd.read_excel(io= f"{dataPath}/teemusData.xls", sheet_name= "Total 
 teemusData.columns = teemusData.iloc[0]
 teemusData = teemusData[1:]
 
+
+projectionData = pd.read_csv(f"{dataPath}/GHG_projection.csv")
+projectionData.columns = projectionData.columns.str.strip()
+
 #############################
 #     Start of the page     #
 #############################
@@ -470,6 +475,26 @@ layout = html.Div(
                 dcc.Graph(id="teemusGraph"),
             ]
         ),
+        html.Div(
+            [
+                html.H1("Global GHG emissions by scenario", 
+                style={"text-align": "center"}),
+                
+                dbc.Label("Choose between total emissions, per capita and per GDP"),
+                dbc.RadioItems(
+                    options=[
+                        {"label": "Trend from implemented policies","value": "7"},
+                        {"label": "Limit warming to 2°C (>67%) or return warming to 1.5°C (>50%) after a high overshoot, NDCs until 2030","value": "4"},
+                        {"label": "Limit warming to 2°C (>67%)", "value": "2"},
+                        {"label": "Limit warming to 2°C (>67%)","value": "1"},
+                    ],
+                        value="7",
+                        id="projectionVal",
+                ),
+                dcc.Graph(id="projection")
+
+            ]
+        ),
     ],
 )
 
@@ -664,3 +689,57 @@ def display_area(sheet,y):
     fig = px.area(
         df, x=df.index, y=y)
     return fig
+
+
+@callback(
+    Output("projection", "figure"),
+    Input("projectionVal", "value"))
+def display_projeciton(proj):
+    proMean = projectionData[f"{proj}m"]
+    confidenceIntervalLow = projectionData[f"{proj}l"]
+    confidenceIntervalHigh = projectionData[f"{proj}h"]
+    x = list(projectionData["Year"])
+    x_rev = x[::-1]
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+        x= x+x_rev,
+        y=list(confidenceIntervalLow)+list(proMean)[::-1],
+        fill='toself',
+        fillcolor='rgba(100,0,0,0.2)',
+        line_color='rgba(255,255,255,0)',
+        showlegend=False,
+        name= '95% Confidence level',
+    ))
+
+    fig.add_trace(go.Scatter(
+        x= x+x_rev,
+        y=list(confidenceIntervalHigh)+list(proMean)[::-1],
+        fill='toself',
+        fillcolor='rgba(0,100,80,0.2)',
+        line_color='rgba(255,255,255,0)',
+        showlegend=False,
+        name= '95% Confidence level',
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x, y=proMean,
+        line_color='rgb(0,100,80)',
+        name='Mean',
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x, y=confidenceIntervalLow,
+        line_color='rgb(200,0,0)',
+        name='Lower bound',
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=x, y=confidenceIntervalHigh,
+        line_color='rgb(0,200,160)',
+        name='Upper bound',
+    ))
+
+    fig.update_traces(mode='lines')
+    return fig
+    
