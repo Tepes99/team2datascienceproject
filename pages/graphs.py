@@ -1,8 +1,11 @@
 import dash
 import dash_bootstrap_components as dbc
+import pycountry_convert as pc
+import pycountry
+import plotly.express as px
+import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import plotly.express as px
 import pycountry_convert as pc
 from dash import Input, Output, callback, dcc, html
@@ -324,6 +327,70 @@ layout = html.Div(
                 ),
             ],
             style={"display": "flex", "flex-direction": "column"},
+        ),
+         html.Div(
+            [
+                html.H1('Number of Policies and measurements by Sector',
+                style={"text-align": "center"}),
+
+                html.P("Select the Sector"),
+                dcc.Dropdown(id = 'sector',
+                                    options=["Total","Energy", "Waste", "Transportation","Industry","Agriculture & Land","Other"],
+                                    multi=False,
+                                    value = 'Total',
+                                    style={'width':'60%'}),       
+                dcc.Graph(id="selinsGraph")
+            ]
+        ),
+        html.Div(
+            [
+                html.H1("Emissions by country", 
+                style={"text-align": "center"}),
+                
+                dbc.Label("Choose between total emissions, per capita and per GDP"),
+                dbc.RadioItems(
+                    options=[
+                        {"label": "Total CO2 Emission", "value": "Total CO2 Emission"},
+                        {"label": "CO2 Emissions Per Capita", "value": "CO2 Emissions Per Capita"},
+                        {"label": "CO2 Emissions Per GDP", "value": "CO2 Emissions Per GDP"},
+                        {"label": "Total Greenhouse Gas Emission", "value": "Total Greenhouse Gas Emission"},
+                        {"label": "Greenhouse Gas Emissions Per Capita", "value": "Greenhouse Emissions Per Capita"},
+                        {"label": "Greenhouse Gas Emissions Per GDP", "value": "Greenhouse Emissions Per GDP"},
+                    ],
+                        value="Total Greenhouse Gas Emission",
+                        id="sheet",
+                ),
+
+
+
+                html.P("Select country:"),
+                    dcc.Dropdown(
+                        id='y-axis',
+                        options=list(teemusData.columns.values),
+                        value='Afghanistan'
+                    ),
+                dcc.Graph(id="teemusGraph"),
+            ]
+        ),
+        html.Div(
+            [
+                html.H1("Global GHG emissions by scenario", 
+                style={"text-align": "center"}),
+                
+                dbc.Label("Choose between total emissions, per capita and per GDP"),
+                dbc.RadioItems(
+                    options=[
+                        {"label": "Trend from implemented policies","value": "7"},
+                        {"label": "Limit warming to 2°C (>67%) or return warming to 1.5°C (>50%) after a high overshoot, NDCs until 2030","value": "4"},
+                        {"label": "Limit warming to 2°C (>67%)", "value": "2"},
+                        {"label": "Limit warming to 2°C (>67%)","value": "1"},
+                    ],
+                        value="7",
+                        id="projectionVal",
+                ),
+                dcc.Graph(id="projection")
+
+            ]
         ),
     ],
 )
