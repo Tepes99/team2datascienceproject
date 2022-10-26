@@ -1,5 +1,5 @@
 import dash
-from dash import html, dcc, Input, Output, callback, ctx
+from dash import Input, Output, callback, ctx, dcc, html
 
 dash.register_page(__name__, path="/")
 
