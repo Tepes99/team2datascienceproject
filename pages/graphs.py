@@ -26,7 +26,7 @@ df_co2_by_sector.fillna(0, inplace=True)  # replace unreported emissions with 0
 
 #  Hieu graph
 
-df_CO2_country = pd.read_excel(io=path, sheet_name="fossil_CO2_totals_by_country")
+df_CO2_country = pd.read_excel(io=path, sheet_name="data/CO2_by_capita.xlsx")
 ##remove EU27 and global emission
 df_CO2_country = df_CO2_country.drop([210, 211, 212])
 nordic_countries = [
@@ -475,7 +475,7 @@ def update_graph_co2_by_region(
     region_slctd, year_slctd
 ):  # number of arguments is the same as the number of inputs
 
-    container = " CO2 emission in {}".format(year_slctd)
+    container = " CO2 emission per capita in {}".format(year_slctd)
 
     if region_slctd == "World":
         df_CO2 = df_CO2_country.copy()
@@ -491,13 +491,16 @@ def update_graph_co2_by_region(
 
     fig = px.choropleth(
         data_frame=df_CO2,
-        locationmode="country names",
-        locations="Country",
-        color=year_slctd,
+        locationmode='country names',
+        locations= 'Country',
+        color= year_slctd,
+        range_color=[0, 20],
         color_continuous_scale=px.colors.sequential.Aggrnyl,
-        hover_data={"Country": False},
-        labels={str(year_slctd): "CO2 emission"},
-        hover_name="Country",
+        hover_data={'Country': False},
+        labels={str(year_slctd): 'CO2 emission per capita'},
+        hover_name='Country',
+        basemap_visible=True,
+        # center = center_dict[region_slctd]
     )
     fig.update_layout(
         autosize=False,
