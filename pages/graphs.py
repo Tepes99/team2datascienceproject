@@ -24,7 +24,7 @@ df_co2_by_sector.fillna(0, inplace=True)  # replace unreported emissions with 0
 
 #  Hieu graph
 
-df_CO2_country = pd.read_excel(io=path, sheet_name="data/CO2_by_capita.xlsx")
+df_CO2_country = pd.read_excel(io='data/CO2_by_capita.xlsx', sheet_name="fossil_CO2_per_capita_by_countr")
 ##remove EU27 and global emission
 df_CO2_country = df_CO2_country.drop([210, 211, 212])
 nordic_countries = [
@@ -167,17 +167,17 @@ layout = html.Div(
                             children = [
                             html.H3('Choose a region:'),
                             ],
-                            style={'width': '100%', 'margin-left': '50px'}
+                            style={'width': '100%'}
                         ),
                         dcc.RadioItems(id = 'region',
                                         options=region,
                                         value = 'World',
                                         inline=False, 
-                                        style={'margin-left':'50px'},
+                                        # style={'margin-left':'50px'},
                                         labelStyle={'display': 'inline-block', 'margin-right':'15px'}, # block for column, inline-block for line
                                         ),
                         html.Br(),
-                        dcc.Graph(id = 'co2_graph', figure = {}, style = {'margin-left':'150px'}),
+                        dcc.Graph(id = 'co2_graph', figure = {}, style = {'margin-left':'10px'}),
                         html.Br(),
                         html.Div(
                             children = 
