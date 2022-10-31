@@ -1,9 +1,7 @@
 import dash
 import dash_bootstrap_components as dbc
-import pycountry_convert as pc
-import pycountry
-import plotly.express as px
 import plotly.graph_objects as go
+import pycountry
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -87,7 +85,6 @@ df_GDP = pd.read_csv(
 
 # Preprocessing
 df_PaM = pd.read_csv(f"{dataPath}/PaM_number.csv")
-
 
 # Teemus graph
 teemusData = pd.read_excel(
@@ -328,50 +325,7 @@ layout = html.Div(
             ],
             style={"display": "flex", "flex-direction": "column"},
         ),
-         html.Div(
-            [
-                html.H1('Number of Policies and measurements by Sector',
-                style={"text-align": "center"}),
-
-                html.P("Select the Sector"),
-                dcc.Dropdown(id = 'sector',
-                                    options=["Total","Energy", "Waste", "Transportation","Industry","Agriculture & Land","Other"],
-                                    multi=False,
-                                    value = 'Total',
-                                    style={'width':'60%'}),       
-                dcc.Graph(id="selinsGraph")
-            ]
-        ),
-        html.Div(
-            [
-                html.H1("Emissions by country", 
-                style={"text-align": "center"}),
-                
-                dbc.Label("Choose between total emissions, per capita and per GDP"),
-                dbc.RadioItems(
-                    options=[
-                        {"label": "Total CO2 Emission", "value": "Total CO2 Emission"},
-                        {"label": "CO2 Emissions Per Capita", "value": "CO2 Emissions Per Capita"},
-                        {"label": "CO2 Emissions Per GDP", "value": "CO2 Emissions Per GDP"},
-                        {"label": "Total Greenhouse Gas Emission", "value": "Total Greenhouse Gas Emission"},
-                        {"label": "Greenhouse Gas Emissions Per Capita", "value": "Greenhouse Emissions Per Capita"},
-                        {"label": "Greenhouse Gas Emissions Per GDP", "value": "Greenhouse Emissions Per GDP"},
-                    ],
-                        value="Total Greenhouse Gas Emission",
-                        id="sheet",
-                ),
-
-
-
-                html.P("Select country:"),
-                    dcc.Dropdown(
-                        id='y-axis',
-                        options=list(teemusData.columns.values),
-                        value='Afghanistan'
-                    ),
-                dcc.Graph(id="teemusGraph"),
-            ]
-        ),
+         
         html.Div(
             [
                 html.H1("Global GHG emissions by scenario", 
