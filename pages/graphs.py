@@ -161,41 +161,37 @@ layout = html.Div(
                 ),
                 dbc.Row(
                     [
-                        html.H1(
-                            "Worldwide CO2 emission", style={"text-align": "center"}
-                        ),
+                        html.H1('CO2 emission per capita', style = {'text-align':'center'}),
+
                         html.Div(
-                            children=[
-                                html.H3("Choose a region:"),
-                                dcc.Dropdown(
-                                    id="region",
-                                    options=region,
-                                    multi=False,
-                                    value="World",
-                                ),
+                            children = [
+                            html.H3('Choose a region:'),
                             ],
+                            style={'width': '100%', 'margin-left': '50px'}
                         ),
+                        dcc.RadioItems(id = 'region',
+                                        options=region,
+                                        value = 'World',
+                                        inline=False, 
+                                        style={'margin-left':'50px'},
+                                        labelStyle={'display': 'inline-block', 'margin-right':'15px'}, # block for column, inline-block for line
+                                        ),
                         html.Br(),
-                        dcc.Graph(id="co2_graph", figure={}, style={}),
+                        dcc.Graph(id = 'co2_graph', figure = {}, style = {'margin-left':'150px'}),
                         html.Br(),
-                        dcc.Slider(
-                            min=1970,
-                            max=2021,
-                            step=1,
-                            value=2021,
-                            marks=None,
-                            tooltip={
-                                "placement": "bottom",
-                                "always_visible": False,
-                            },
-                            id="year_slider",
-                        ),
                         html.Div(
-                            id="output_container",
-                            children=[],
-                            style={"text-align": "center", "font-size": "25px"},
+                            children = 
+                                [dcc.Slider(min = 1970, 
+                                            max = 2021, 
+                                            step = 1, 
+                                            value = 2021, 
+                                            marks=None,
+                                            tooltip={"placement": "bottom", "always_visible": False}, 
+                                            id = 'year_slider')],
+                            style = {'width': '50%', 'margin-left':'440px'}
                         ),
-                    ],
+                        html.Div(id = 'output_container', children = [], style={'text-align':'center', 'font-size':'25px'})
+                                    ],
                     style={
                         "order": 1,
                     },
