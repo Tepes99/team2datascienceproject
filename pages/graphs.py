@@ -16,13 +16,62 @@ dataPath = f"{mainDirectory[0:-5]}/data/"
 
 dash.register_page(__name__, path="/graphs")
 path = f"{dataPath}/EDGARv7.0_FT2021_fossil_CO2_booklet_2022.xlsx"
-# Daniel graph
-df_co2_by_sector = pd.read_csv(f"{dataPath}CO2_by_sector_and_country.csv")
-daniel_scope = sorted([*set(df_co2_by_sector["Country"])])
-daniel_scope.append("Global emissions")  # selectable countries + GLOBAL VIEW
-df_co2_by_sector.fillna(0, inplace=True)  # replace unreported emissions with 0
 
-#  Hieu graph
+
+### Daniel graph
+
+# PREPROCESSING ETC => Rather not do this every update so perform here
+sector_data = pd.read_excel(io=f"{path}", sheet_name="fossil_CO2_by_sector_and_countr")
+sector_data.drop(columns=["Substance"], inplace=True) # drop unnecessary columns
+scope = sorted([*set(sector_data["Country"])]); scope.append("Global emissions") # selectable countries + GLOBAL VIEW
+
+pop_data = pd.read_csv(f"{dataPath}API_SP.POP.TOTL_DS2_en_csv_v2_4685015.csv", skiprows=4)
+
+drop_years = [str(y) for y in range(1960,1970)] # more than necessary population data
+drop_cols = drop_years + ["Country Name", "Indicator Name", "Indicator Code", "Unnamed: 66"] 
+pop_data.drop(columns=drop_cols, inplace=True) # drop unnecessary cols
+
+# computing total populations per year (from our underlying data rather than external source to
+# maintain consistancy with ratios)
+pop_totals = pop_data.copy()
+pop_totals = pop_totals[pop_totals["Country Code"].isin([*set(sector_data["EDGAR Country Code"])])]
+pop_totals.drop(columns=["Country Code"], inplace=True)
+pop_totals = pop_totals.sum() # series of total populations per year
+
+sector_per_capita = sector_data.copy() # we build the emissions/sector/capita into this
+
+# The global scope
+global_sector_per_capita = sector_data.copy()
+global_sector_per_capita.drop(columns=["Country", "EDGAR Country Code"], inplace=True) # not needed on global scope
+global_sector_per_capita = global_sector_per_capita.groupby("Sector", as_index=False).sum() # group by sector, aggregate by summing yearly emissions
+global_sector_per_capita.columns = global_sector_per_capita.columns.astype(str) # change names to string to ensure sound processing
+
+years = range(1970,2022)
+
+# dividing the earlier aggregated total co2 by population
+for row in global_sector_per_capita.itertuples():
+    for year in years:
+        pop = pop_totals[str(year)]
+        co2 = global_sector_per_capita.at[row.Index, str(year)]
+        global_sector_per_capita.at[row.Index, str(year)] = 10**6 * co2 / pop # convert from Mt => t
+
+# same as above but country specific
+for row in sector_per_capita.itertuples():
+    country = row._2
+    pop_ts = pop_data[pop_data["Country Code"] == country]
+    if not pop_ts.empty:
+        pop_ts.reset_index(drop=True,inplace=True)
+        for year in years:
+            pop = pop_ts.at[0,str(year)]
+            co2 = sector_per_capita.at[row.Index, year]
+            sector_per_capita.at[row.Index, year] = 10**6 * co2 / pop # convert from Mt => t
+
+
+
+
+
+
+###  Hieu graph
 
 df_CO2_country = pd.read_excel(io='data/CO2_by_capita.xlsx', sheet_name="fossil_CO2_per_capita_by_countr")
 ##remove EU27 and global emission
@@ -71,14 +120,44 @@ region = [
 ]
 
 
-# Linh graph
-df_co2_change = pd.read_csv(f"{dataPath}co2_by_country.csv")
-scope = list(df_co2_change["Country"].unique())
+##### Linh graph
 
+# CO2 per capita
+df_CO2_capita = pd.read_excel(f"{dataPath}CO2_by_capita.xlsx")
+df_CO2_capita = df_CO2_capita.drop(columns=['Substance', 'EDGAR Country Code'])
+scope = list(df_CO2_capita["Country"].unique())
+df_CO2_capita = pd.melt(df_CO2_capita, id_vars='Country', value_vars= df_CO2_capita.columns[1:],  var_name='Year', value_name='CO2_per_capita')
+df_CO2_capita['Year'] = df_CO2_capita['Year'].astype("int")
+df_CO2_capita['Country'] = df_CO2_capita['Country'].astype("string")
 
-df_GDP = pd.read_csv(
-    f"{dataPath}/GDP_by_country_current_international_dollar.csv",
-)
+# GDP per capita
+df_GDP_capita = pd.read_excel(f"{dataPath}GDP_per_capita.xlsx", skiprows = 3)
+df_GDP_capita = df_GDP_capita.drop(columns= df_GDP_capita.columns[1:34])
+df_GDP_capita = df_GDP_capita.rename(columns={"Country Name": "Country"})
+df_GDP_capita = pd.melt(df_GDP_capita, id_vars='Country', value_vars= df_GDP_capita.columns[1:],  var_name='Year', value_name='GDP_per_capita')
+df_GDP_capita['Year'] = df_GDP_capita['Year'].astype("int")
+df_GDP_capita['Country'] = df_GDP_capita['Country'].astype("string")
+
+# Population
+df_population = pd.read_csv(f"{dataPath}population.csv", skiprows = 4)
+df_population = df_population.drop(columns= df_population.columns[1:4])
+df_population = df_population.drop(columns= df_population.columns[-1])
+df_population = df_population.rename(columns={"Country Name": "Country"})
+df_population = pd.melt(df_population, id_vars='Country', value_vars= df_population.columns[1:],  var_name='Year', value_name='Population')
+df_population['Year'] = df_population['Year'].astype("int")
+df_population['Country'] = df_population['Country'].astype("string")
+df_population = df_population.dropna()
+
+# Final dataset
+df = pd.merge(df_CO2_capita, df_GDP_capita, on=["Country","Year"],how = 'inner')
+df = pd.merge(df, df_population, on=["Country","Year"],how = 'inner')
+df['Continent'] =  df['Country'].apply(lambda x: country_to_continent(x))
+
+# Add Nordics into data sets
+df_nordics = df[df['Country'].isin(nordic_countries)]
+df_nordics['Continent'] = 'Nordics'
+df = pd.concat([df, df_nordics])
+df = df[df['Continent'] != 'Unspecified']
 
 
 # Selins graph
@@ -139,30 +218,31 @@ layout = html.Div(
             [
                 dbc.Row(
                     [
-                        html.H1(
-                            "CO2 emissions by sector", style={"text-align": "center"}
-                        ),
-                        html.Div(
-                            children=[
-                                html.H3("Select scope:"),
-                                dcc.Dropdown(
-                                    id="daniel_scope",
-                                    options=daniel_scope,
-                                    multi=False,
-                                    value="Global emissions",
-                                ),
-                            ]
-                        ),
-                        html.Br(),
-                        dcc.Graph(id="sector_emissions_graph", style={}),
-                        html.Br(),
-                    ],
+        html.H1('CO2 emissions per sector', style = {'text-align':'center'}),
+        html.Div(
+            children = [
+            html.H3('Select scope:'),
+            dcc.Dropdown(id = 'scope',
+                        options=scope,
+                        multi=False,
+                        value = 'Global emissions',
+                        style={'width':'60%'}),
+            html.Br(),
+            dcc.RadioItems(id = 'scale',
+                          options=["Total CO2", "CO2 / capita"],
+                          value="CO2 / capita")
+            ],
+            style={'width': '50%', 'margin-left': '50px'}
+        ),
+        html.Br(),
+        dcc.Graph(id ='sector_emissions_graph', style = {'margin-left':'150px'}),
+        html.Br()
+    ],
                     style={"order": 2},
                 ),
                 dbc.Row(
                     [
                         html.H1('CO2 emission per capita', style = {'text-align':'center'}),
-
                         html.Div(
                             children = [
                             html.H3('Choose a region:'),
@@ -197,54 +277,33 @@ layout = html.Div(
                     },
                 ),
                 dbc.Row(
-                    [
-                        html.H1(
-                            "Changes in CO2 emissions and GDP",
-                            style={"text-align": "center"},
-                        ),
+                   [
+                        html.H1('GDP per capita and CO2 emissions per capita by region and by country', style = {'text-align':'center'}),
                         html.Div(
-                            children=[
-                                html.H3("Select scope:"),
-                                dcc.Dropdown(
-                                    id="scope",
-                                    options=scope,
-                                    multi=False,
-                                    value="Finland",
-                                ),
-                            ],
-                        ),
+                            children= [
+                                html.Div([
+                                html.Br(),
+                                dcc.RadioItems(
+                                                ['Linear', 'Log'],
+                                                'Log',
+                                                id='crossfilter-type',
+                                                #labelStyle={'display': 'inline-block', 'marginTop': '5px'}
+                                            )
+                                        ],
+                                style={'width': '49%', 'display': 'inline-block'}),
+                            ]),
                         html.Br(),
-                        dcc.Graph(
-                            id="C02_change_emissions_graph",
-                            style={},
-                        ),
-                        html.Br(),
-                        html.Div(
-                            children=[
-                                html.H3("Select year:"),
-                                dcc.RangeSlider(
-                                    min=1990,
-                                    max=2021,
-                                    step=1,
-                                    value=[2000, 2021],
-                                    marks={
-                                        1990: "1990",
-                                        1995: "1995",
-                                        2000: "2000",
-                                        2005: "2005",
-                                        2010: "2010",
-                                        2015: "2015",
-                                        2021: "2021",
-                                    },
-                                    tooltip={
-                                        "placement": "bottom",
-                                        "always_visible": True,
-                                    },
-                                    id="my-range-slider",
-                                ),
-                            ]
-                        ),
-                    ],
+                        html.Div([
+                                dcc.Graph(
+                                    id='scatterplot-percapita',
+                                    hoverData={'points': [{'id': 'Finland'}]}
+                                )
+                            ], style={'width': '55%', 'display': 'inline-block', 'padding': '0 20'}),
+                        html.Div([
+                                dcc.Graph(id='x-time-series'),
+                                dcc.Graph(id='y-time-series'),
+                            ], style={'display': 'inline-block', 'width': '40%'}),
+                        ],
                     style={"order": 3},
                 ),
                 dbc.Row(
@@ -352,6 +411,7 @@ layout = html.Div(
     Input("activities", "value"),
     prevent_initial_call=True,
 )
+
 def update_output_div(input_value, activities):
     if len(activities) == 0 or input_value is None:
         ans = 0
@@ -364,51 +424,54 @@ def update_output_div(input_value, activities):
         )
 
 
-@callback(Output("sector_emissions_graph", "figure"), Input("daniel_scope", "value"))
-def update_graph_co2_by_sector(selection):
-    data = df_co2_by_sector.copy()
-    if selection == "Global emissions":
-        data.drop(columns=["Country"], inplace=True)  # not needed on global scope
-        data = data.groupby(
-            "Sector", as_index=False
-        ).sum()  # group by sector, aggregate by summing yearly emissions
-        data.columns = data.columns.astype(
-            str
-        )  # change names to string to ensure sound processing
-        # we need the data from wide-form to long-form (see internet or plotly docs on why):
-        data = pd.melt(
-            data,
-            id_vars="Sector",
-            value_vars=data.columns,
-            var_name="Year",
-            value_name="CO2 emissions",
-            ignore_index=True,
-        )
-        fig = px.area(
-            data, x="Year", y="CO2 emissions", color="Sector", template="none"
-        )
+
+@callback(
+    Output("sector_emissions_graph", "figure"), 
+    Input("scope", "value"),
+    Input("scale", "value"))
+
+def update_graph_co2_by_sector(select, scale):
+    if scale == "CO2 / capita":
+        if select == "Global emissions":
+            data = global_sector_per_capita.copy()
+            # we need the data from wide-form to long-form (see internet or plotly docs on why):
+            data = pd.melt(data, id_vars = "Sector", value_vars=data.columns, var_name="Year", value_name = "CO2 emissions [Tonnes/person]", ignore_index=True)
+            fig = px.area(data, x="Year", y="CO2 emissions [Tonnes/person]", color="Sector", template="none")
+        else:
+            # dont know why this slightly bugs out. Python thinks selecting row based on column criteria
+            # produces a series when it produces a dataframe. Works when running so no problem
+            data = sector_per_capita.copy()
+            data = data[data["Country"] == select] # select country data
+            data.drop(columns=["Country"], inplace=True)
+            data.columns = data.columns.astype(str) # change names to string to ensure sound processing
+            # we need the data from wide-form to long-form (see internet or plotly docs on why):
+            data = pd.melt(data, id_vars = "Sector", value_vars=data.columns[1:], var_name="Year", value_name = "CO2 emissions [Tonnes/person]", ignore_index=True)
+            fig = px.area(data, x="Year", y="CO2 emissions [Tonnes/person]", color="Sector", template="none")
+        return fig
     else:
-        # dont know why this slightly bugs out. Python thinks selecting row based on column criteria
-        # produces a series when it produces a dataframe. Works when running so no problem
-        data = data[data["Country"] == selection]  # select country data
-        data.drop(columns=["Country"], inplace=True)
-        data.columns = data.columns.astype(
-            str
-        )  # change names to string to ensure sound processing
-        # we need the data from wide-form to long-form (see internet or plotly docs on why):
-        data = pd.melt(
-            data,
-            id_vars="Sector",
-            value_vars=data.columns[1:],
-            var_name="Year",
-            value_name="CO2 emissions",
-            ignore_index=True,
-        )
-        fig = px.area(
-            data, x="Year", y="CO2 emissions", color="Sector", template="none"
-        )
-    fig.update_layout(legend={"orientation": "h", "y": -0.4})
-    return fig
+        if select == "Global emissions":
+            data = sector_data.copy()
+            data.drop(columns=["Country", "EDGAR Country Code"], inplace=True) # not needed on global scope
+            data = data.groupby("Sector", as_index=False).sum() # group by sector, aggregate by summing yearly emissions
+            data.columns = data.columns.astype(str)
+            # we need the data from wide-form to long-form (see internet or plotly docs on why):
+            data = pd.melt(data, id_vars = "Sector", value_vars=data.columns, var_name="Year", value_name = "CO2 emissions [Megatonnes]", ignore_index=True)
+            fig = px.area(data, x="Year", y="CO2 emissions [Megatonnes]", color="Sector", template="none")
+        else:
+            # dont know why this slightly bugs out. Python thinks selecting row based on column criteria
+            # produces a series when it produces a dataframe. Works when running so no problem
+            data = sector_data.copy()
+            data = data[data["Country"] == select] # select country data
+            data.drop(columns=["Country", "EDGAR Country Code"], inplace=True)
+            data.columns = data.columns.astype(str) # change names to string to ensure sound processing
+            # we need the data from wide-form to long-form (see internet or plotly docs on why):
+            data = pd.melt(data, id_vars = "Sector", value_vars=data.columns[1:], var_name="Year", value_name = "CO2 emissions [Megatonnes]", ignore_index=True)
+            fig = px.area(data, x="Year", y="CO2 emissions [Megatonnes]", color="Sector", template="none")
+        return fig
+
+
+
+
 
 
 @callback(
@@ -421,6 +484,7 @@ def update_graph_co2_by_sector(selection):
         Input(component_id="year_slider", component_property="value"),
     ],
 )
+
 def update_graph_co2_by_region(
     region_slctd, year_slctd
 ):  # number of arguments is the same as the number of inputs
@@ -461,61 +525,91 @@ def update_graph_co2_by_region(
     return container, fig
 
 
+
 @callback(
-    Output("C02_change_emissions_graph", "figure"),
-    Input("scope", "value"),
-    [Input("my-range-slider", "value")],
-)
-def update_graph_co2_vs_gdp_change(scope_selected, years_selected):
-    data = df_co2_change.copy()
-    data1 = df_GDP.copy()
-    ###
-    data = data[data["Country"] == scope_selected]
-    data.columns = data.columns.astype(str)
-    data = pd.melt(
-        data,
-        id_vars="Country",
-        value_vars=data.columns[1:],
-        var_name="Year",
-        value_name="Change",
-        ignore_index=True,
+    Output('scatterplot-percapita', 'figure'),
+    Input('crossfilter-type', 'value')
     )
-    data["Year"] = data["Year"].astype("int")
-    data = data[
-        (data["Year"] >= years_selected[0]) & (data["Year"] <= years_selected[1])
-    ]
-    data.drop(columns=["Country"], inplace=True)
-    data.iloc[:, 1] = data.iloc[:, 1].apply(
-        lambda row: (((row - data.iloc[0, 1]) / data.iloc[0, 1]))
-    )
-    data["Metric"] = "CO2"
 
-    ###
-    data1 = data1[data1["Country Name"] == scope_selected]
-    data1.columns = data1.columns.astype(str)
-    data1 = pd.melt(
-        data1,
-        id_vars="Country Name",
-        value_vars=data1.columns[1:],
-        var_name="Year",
-        value_name="Change",
-        ignore_index=True,
-    )
-    data1["Year"] = data1["Year"].astype("int")
-    data1 = data1[
-        (data1["Year"] >= years_selected[0]) & (data1["Year"] <= years_selected[1])
-    ]
-    data1.drop(columns=["Country Name"], inplace=True)
-    data1.iloc[:, 1] = data1.iloc[:, 1].apply(
-        lambda row: (((row - data1.iloc[0, 1]) / data1.iloc[0, 1]))
-    )
-    data1["Metric"] = "GDP"
+def update_graph_co2_and_gdp_per_capita(type):
 
-    df = pd.concat([data, data1.loc[:]]).reset_index(drop=True)
-    fig = px.line(df, x="Year", y="Change", color="Metric", template="none")
-    fig.layout.yaxis.tickformat = ",.1%"
+    fig = px.scatter(
+         df,
+         x="GDP_per_capita", 
+         y="CO2_per_capita",
+         size="Population", 
+         color='Continent',
+         hover_name= "Country",
+         animation_frame="Year",
+         animation_group="Country",
+         size_max=55
+         ) 
+    
+    fig.update_traces(customdata= df['Country'])
+
+    fig.update_xaxes(
+        title= 'GDP per capita (current US$)', 
+        type='linear' if type == 'Linear' else 'log',
+        )
+
+    fig.update_yaxes(
+        title= 'CO2 per capita (Tonnes/person)',
+        type='linear' if type == 'Linear' else 'log')
+
+    fig.update_layout(
+        margin={'l': 40, 'b': 40, 't': 10, 'r': 0}, 
+        hovermode='closest',
+        height= 500,
+        transition_duration=500 )
+    return fig
+
+
+def create_time_series(filtered_df, axis_type, title, y_axis):
+    fig = px.scatter(filtered_df, x='Year', y=y_axis)
+    fig.update_traces(mode='lines+markers')
+    fig.update_xaxes(showgrid=False)
+    fig.update_yaxes(
+        type='linear' if axis_type == 'Linear' else 'log',
+        title = "CO2/capita (tonnes/person)" if y_axis == 'CO2_per_capita' else 'GDP/capita (current US$)')
+    fig.add_annotation(x=0, y=0.85, xanchor='left', yanchor='bottom',
+                       xref='paper', yref='paper', showarrow=False, align='left',
+                       text=title)
+    fig.update_layout(height=255, margin={'l': 20, 'b': 30, 'r': 10, 't': 10})
 
     return fig
+
+@callback(
+    Output('x-time-series', 'figure'),
+    Input('scatterplot-percapita', 'hoverData'),
+    Input('crossfilter-type', 'value'))
+
+
+def update_y_timeseries(hoverData, axis_type):
+    country_name = hoverData['points'][0]['id']
+    if country_name in nordic_countries:
+        filtered_df = df_nordics[df_nordics['Country'] == country_name]
+    else:
+        filtered_df = df[df['Country'] == country_name]
+    title = country_name
+    return create_time_series(filtered_df, axis_type, title, 'GDP_per_capita')
+
+
+@callback(
+    Output('y-time-series', 'figure'),
+    Input('scatterplot-percapita', 'hoverData'),
+    Input('crossfilter-type', 'value'))
+
+
+def update_x_timeseries(hoverData, axis_type):
+    country_name = hoverData['points'][0]['id']
+    if country_name in nordic_countries:
+        filtered_df = df_nordics[df_nordics['Country'] == country_name]
+    else:
+        filtered_df = df[df['Country'] == country_name]
+    title = country_name
+    return create_time_series(filtered_df, axis_type, title, 'CO2_per_capita')
+
+
 
 
 @callback(Output("selinsGraph", "figure"), Input("sector", "value"))
