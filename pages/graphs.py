@@ -397,7 +397,28 @@ layout = html.Div(
                         value="7",
                         id="projectionVal",
                 ),
-                dcc.Graph(id="projection")
+                dcc.Graph(id="projection"),
+
+            ],
+        ),
+
+        html.Div(
+            [
+                html.H1("Resources for the Future: Carbon pricing calculator", 
+                style={"text-align": "center"}),
+                
+                dbc.Label("RFF Carbon Pricing Calculator"),
+                dbc.RadioItems(
+                    options=[
+                        {"label": "Annual Emissions","value": "RFF_Annual_EmissionsL.csv"},
+                        {"label": "Cumulative Emissions","value": "RFF_Cumulative_EmissionsL.csv"},
+                        {"label": "Carbon Price", "value": "RFF_Carbon_Price.csv"},
+                        {"label": "Annual Revenues","value": "RFF_Annual_RevenuesL.csv"},
+                    ],
+                        value="RFF_Annual_EmissionsL.csv",
+                        id="RFF_calc_file",
+                ),
+                dcc.Graph(id="RFF_calc")
 
             ]
         ),
@@ -638,6 +659,39 @@ def display_area(sheet, y):
     df.columns = df.iloc[0]
     df = df[1:]
     fig = px.area(df, x=df.index, y=y)
+
+    fig.update_layout(
+        xaxis=dict(
+            showline=True,
+            showgrid=False,
+            showticklabels=True,
+            linecolor='rgb(204, 204, 204)',
+            linewidth=2,
+            ticks='outside',
+            tickfont=dict(
+                family='Arial',
+                size=12,
+                color='rgb(82, 82, 82)',
+            ),
+        ),
+        yaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+        ),
+        autosize=False,
+        margin=dict(
+            autoexpand=False,
+            l=100,
+            r=20,
+            t=110,
+        ),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+
+
     return fig
 
 
@@ -690,6 +744,75 @@ def display_projeciton(proj):
         name='Upper bound',
     ))
 
+    fig.update_layout(
+        xaxis=dict(
+            showline=True,
+            showgrid=False,
+            showticklabels=True,
+            linecolor='rgb(204, 204, 204)',
+            linewidth=2,
+            ticks='outside',
+            tickfont=dict(
+                family='Arial',
+                size=12,
+                color='rgb(82, 82, 82)',
+            ),
+        ),
+        yaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+        ),
+        autosize=False,
+        margin=dict(
+            autoexpand=False,
+            l=100,
+            r=20,
+            t=110,
+        ),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+
     fig.update_traces(mode='lines')
     return fig
+
+@callback(
+    Output("RFF_calc", "figure"), Input("RFF_calc_file", "value")
+)
+def display_area(calc_file):
+    df = pd.read_csv(f"{dataPath}/{calc_file}")
+    fig = px.line(df, x=df["Year"], y = df.columns[2], color= df["Policy"])
     
+    fig.update_layout(
+        xaxis=dict(
+            showline=True,
+            showgrid=False,
+            showticklabels=True,
+            linecolor='rgb(204, 204, 204)',
+            linewidth=2,
+            ticks='outside',
+            tickfont=dict(
+                family='Arial',
+                size=12,
+                color='rgb(82, 82, 82)',
+            ),
+        ),
+        yaxis=dict(
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+        ),
+        autosize=False,
+        margin=dict(
+            autoexpand=False,
+            l=100,
+            r=20,
+            t=110,
+        ),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+    return fig
