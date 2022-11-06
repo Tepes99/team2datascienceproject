@@ -404,7 +404,7 @@ layout = html.Div(
 
         html.Div(
             [
-                html.H1("Resources for the Future: Carbon pricing calculator", 
+                html.H1("Resources for the Future: Carbon Pricing Calculator", 
                 style={"text-align": "center"}),
                 
                 dbc.Label("RFF Carbon Pricing Calculator"),
@@ -414,6 +414,7 @@ layout = html.Div(
                         {"label": "Cumulative Emissions","value": "RFF_Cumulative_EmissionsL.csv"},
                         {"label": "Carbon Price", "value": "RFF_Carbon_Price.csv"},
                         {"label": "Annual Revenues","value": "RFF_Annual_RevenuesL.csv"},
+                        {"label": "Consumer Prices % Change in 2030 Compared to Business as Usual","value": "RFF_Consumer_Prices.csv"},
                     ],
                         value="RFF_Annual_EmissionsL.csv",
                         id="RFF_calc_file",
@@ -764,9 +765,9 @@ def display_projeciton(proj):
             showline=False,
             showticklabels=True,
         ),
-        autosize=False,
+        autosize=True,
         margin=dict(
-            autoexpand=False,
+            autoexpand=True,
             l=100,
             r=20,
             t=110,
@@ -783,36 +784,40 @@ def display_projeciton(proj):
 )
 def display_area(calc_file):
     df = pd.read_csv(f"{dataPath}/{calc_file}")
-    fig = px.line(df, x=df["Year"], y = df.columns[2], color= df["Policy"])
-    
+    if calc_file == "RFF_Consumer_Prices.csv":
+        fig = go.Figure()
+        for colName in df.columns[1:]:
+            fig.add_trace(go.Bar(y= df[colName], x= df["Category"], name=colName))
+    else:
+        fig = px.line(df, x=df["Year"], y = df.columns[2], color= df["Policy"])
     fig.update_layout(
-        xaxis=dict(
-            showline=True,
-            showgrid=False,
-            showticklabels=True,
-            linecolor='rgb(204, 204, 204)',
-            linewidth=2,
-            ticks='outside',
-            tickfont=dict(
-                family='Arial',
-                size=12,
-                color='rgb(82, 82, 82)',
-            ),
-        ),
-        yaxis=dict(
-            showgrid=False,
-            zeroline=False,
-            showline=False,
-            showticklabels=True,
-        ),
-        autosize=False,
-        margin=dict(
-            autoexpand=False,
-            l=100,
-            r=20,
-            t=110,
-        ),
-        showlegend=True,
-        plot_bgcolor='white'
-    )
+                xaxis=dict(
+                    showline=True,
+                    showgrid=False,
+                    showticklabels=True,
+                    linecolor='rgb(204, 204, 204)',
+                    linewidth=2,
+                    ticks='outside',
+                    tickfont=dict(
+                        family='Arial',
+                        size=12,
+                        color='rgb(82, 82, 82)',
+                    ),
+                ),
+                yaxis=dict(
+                    showgrid=False,
+                    zeroline=False,
+                    showline=False,
+                    showticklabels=True,
+                ),
+                autosize=True,
+                margin=dict(
+                    autoexpand=True,
+                    l=100,
+                    r=20,
+                    t=110,
+                ),
+                showlegend=True,
+                plot_bgcolor='white'
+            )
     return fig
