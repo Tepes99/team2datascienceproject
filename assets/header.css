@@ -9,7 +9,7 @@
   color: #fff;
   cursor: pointer;
   font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
-  font-size: 100%;
+  font-size: 200%;
   height: 100px;
   line-height: 1.15;
   margin: 12px 0 0;
@@ -33,4 +33,46 @@
 
 .stuff:focus {
   box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+}
+.question {
+  margin-left: 30%;
+  margin-right: 30%;
+  font-size: 400%;
+}
+#hook_question, [id^="question"]  {
+  margin-top: 15%;
+}
+.some-page-wrapper {
+  margin: 15px;
+  background-color: red;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .question {
+    margin-left: 30%;
+    margin-right: 30%;
+    font-size: 200%;
+  }
+  .stuff {
+    font-size: 150%;
+  }
+  #hook_question, #question2 {
+    margin-top: 3%;
+  }
 }

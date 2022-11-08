@@ -1,34 +1,44 @@
 import dash
 from dash import Input, Output, callback, ctx, dcc, html
 
-dash.register_page(__name__, path="/")
+dash.register_page(__name__, path="/question3")
 layout = html.Div(
     [
-        html.Div([]),
         html.Div(
             [
                 html.H1(
-                    "How much of the excess heat from global warming is captured in the oceans?",
+                    "How much global temperatures are predicted to rise within the next 2 decades?",
                     className="question",
                 ),
                 html.Div(
                     [
+                        html.Div(
+                            [
+                                html.Button(
+                                    "1.5 Celcious",
+                                    className="stuff",
+                                    id="first_button_ques3",
+                                    style={"margin": "6px"},
+                                )
+                            ],
+                            className="column",
+                        ),
                         html.Button(
-                            "Around 10%",
+                            "5 Celcious",
                             className="stuff",
-                            id="first_button",
+                            id="second_button_ques3",
                             style={"margin": "6px"},
                         ),
                         html.Button(
-                            "Around 50%",
+                            "7 Celsious",
                             className="stuff",
-                            id="second_button",
+                            id="third_button_ques3",
                             style={"margin": "6px"},
                         ),
                         html.Button(
-                            "Around 90%",
+                            "20 Celsious",
                             className="stuff",
-                            id="third_button",
+                            id="fourth_button_ques3",
                             style={"margin": "6px"},
                         ),
                     ],
@@ -40,26 +50,27 @@ layout = html.Div(
                     },
                 ),
             ],
-            id="hook_question",
+            id="question3",
         ),
     ]
 )
 
 
 @callback(
-    Output("hook_question", "children"),
-    Input("first_button", "n_clicks"),
-    Input("second_button", "n_clicks"),
-    Input("third_button", "n_clicks"),
+    Output("question3", "children"),
+    Input("first_button_ques3", "n_clicks"),
+    Input("second_button_ques3", "n_clicks"),
+    Input("third_button_ques3", "n_clicks"),
+    Input("fourth_button_ques3", "n_clicks"),
     prevent_initial_call=True,
 )
-def update_log(b1, b2, b3):
+def update_log(b1, b2, b3, b4):
     triggered_id = ctx.triggered_id
-    if triggered_id == "first_button" or triggered_id == "second_button":
+    if triggered_id == "first_button_ques3":
         return html.Div(
             [
                 html.H1(
-                    "Don’t look for global warming outside your window",
+                    "Correct",
                     style={
                         "margin-left": "30%",
                         "margin-right": "30%",
@@ -67,8 +78,8 @@ def update_log(b1, b2, b3):
                     },
                 ),
                 dcc.Link(
-                    "To Knowledge",
-                    href="/question2",
+                    "Next question",
+                    href="/question4",
                     style={
                         "margin-left": "44%",
                         "margin-right": "30%",
@@ -82,24 +93,16 @@ def update_log(b1, b2, b3):
         return html.Div(
             [
                 html.H1(
-                    "Next question",
+                    "Incorrect",
                     style={
                         "margin-left": "30%",
                         "margin-right": "30%",
                         "font-size": "70px",
                     },
                 ),
-                html.P(
-                    "But 90%% of people answer wrongly. Most people are unaware that most global warming is hiding in the seas. As long as they think global warming is all about air temperature, they won’t realize the size of the problem.",
-                    style={
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                        "font-size": "30px",
-                    },
-                ),
                 dcc.Link(
                     "Next question",
-                    href="/question2",
+                    href="/question4",
                     style={
                         "margin-left": "44%",
                         "margin-right": "30%",

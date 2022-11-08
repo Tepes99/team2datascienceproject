@@ -1,34 +1,40 @@
 import dash
 from dash import Input, Output, callback, ctx, dcc, html
 
-dash.register_page(__name__, path="/")
+dash.register_page(__name__, path="/question4")
+
 layout = html.Div(
     [
-        html.Div([]),
         html.Div(
             [
                 html.H1(
-                    "How much of the excess heat from global warming is captured in the oceans?",
+                    "How many million tonnes of plastic is leaked to the ocean?",
                     className="question",
                 ),
                 html.Div(
                     [
                         html.Button(
-                            "Around 10%",
+                            "2 million",
                             className="stuff",
-                            id="first_button",
+                            id="first_button_ques4",
                             style={"margin": "6px"},
                         ),
                         html.Button(
-                            "Around 50%",
+                            "6 million",
                             className="stuff",
-                            id="second_button",
+                            id="second_button_ques4",
                             style={"margin": "6px"},
                         ),
                         html.Button(
-                            "Around 90%",
+                            "10 million",
                             className="stuff",
-                            id="third_button",
+                            id="third_button_ques4",
+                            style={"margin": "6px"},
+                        ),
+                        html.Button(
+                            "13 million",
+                            className="stuff",
+                            id="fourth_button_ques4",
                             style={"margin": "6px"},
                         ),
                     ],
@@ -40,26 +46,27 @@ layout = html.Div(
                     },
                 ),
             ],
-            id="hook_question",
+            id="question4",
         ),
     ]
 )
 
 
 @callback(
-    Output("hook_question", "children"),
-    Input("first_button", "n_clicks"),
-    Input("second_button", "n_clicks"),
-    Input("third_button", "n_clicks"),
+    Output("question4", "children"),
+    Input("first_button_ques4", "n_clicks"),
+    Input("second_button_ques4", "n_clicks"),
+    Input("third_button_ques4", "n_clicks"),
+    Input("fourth_button_ques4", "n_clicks"),
     prevent_initial_call=True,
 )
-def update_log(b1, b2, b3):
+def update_log(b1, b2, b3, b4):
     triggered_id = ctx.triggered_id
-    if triggered_id == "first_button" or triggered_id == "second_button":
+    if triggered_id == "second_button_ques4":
         return html.Div(
             [
                 html.H1(
-                    "Don’t look for global warming outside your window",
+                    "Correct",
                     style={
                         "margin-left": "30%",
                         "margin-right": "30%",
@@ -68,7 +75,7 @@ def update_log(b1, b2, b3):
                 ),
                 dcc.Link(
                     "To Knowledge",
-                    href="/question2",
+                    href="/question5",
                     style={
                         "margin-left": "44%",
                         "margin-right": "30%",
@@ -82,24 +89,16 @@ def update_log(b1, b2, b3):
         return html.Div(
             [
                 html.H1(
-                    "Next question",
+                    "Incorrect",
                     style={
                         "margin-left": "30%",
                         "margin-right": "30%",
                         "font-size": "70px",
                     },
                 ),
-                html.P(
-                    "But 90%% of people answer wrongly. Most people are unaware that most global warming is hiding in the seas. As long as they think global warming is all about air temperature, they won’t realize the size of the problem.",
-                    style={
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                        "font-size": "30px",
-                    },
-                ),
                 dcc.Link(
-                    "Next question",
-                    href="/question2",
+                    "To Knowledge",
+                    href="/question5",
                     style={
                         "margin-left": "44%",
                         "margin-right": "30%",

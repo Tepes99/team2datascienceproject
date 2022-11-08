@@ -3,8 +3,8 @@ import random
 import dash
 from dash import Input, Output, callback, ctx, dcc, html
 
-dash.register_page(__name__, path="/")
-num = random.randint(1, 5)
+##num = random.randint(1, 5)
+num = 2
 if num == 1:
     layout = html.Div(
         [
@@ -12,11 +12,7 @@ if num == 1:
                 [
                     html.H1(
                         "How much of the excess heat from global warming is captured in the oceans?",
-                        style={
-                            "margin-left": "30%",
-                            "margin-right": "30%",
-                            "font-size": "60px",
-                        },
+                        className="question",
                     ),
                     html.Div(
                         [
@@ -44,12 +40,10 @@ if num == 1:
                             "flex-direction": "column",
                             "margin-left": "30%",
                             "margin-right": "30%",
-                            "font-size": "40px",
                         },
                     ),
                 ],
                 id="hook_question",
-                style={"margin-top": "15%"},
             ),
         ]
     )
@@ -125,19 +119,20 @@ elif num == 2:
                 [
                     html.H1(
                         "How much global temperatures are predicted to rise within the next 2 decades?",
-                        style={
-                            "margin-left": "30%",
-                            "margin-right": "30%",
-                            "font-size": "60px",
-                        },
+                        className="question",
                     ),
                     html.Div(
                         [
-                            html.Button(
-                                "1.5 Celcious",
-                                className="stuff",
-                                id="first_button",
-                                style={"margin": "6px"},
+                            html.Div(
+                                [
+                                    html.Button(
+                                        "1.5 Celcious",
+                                        className="stuff",
+                                        id="first_button",
+                                        style={"margin": "6px"},
+                                    )
+                                ],
+                                className="column",
                             ),
                             html.Button(
                                 "5 Celcious",
@@ -163,12 +158,10 @@ elif num == 2:
                             "flex-direction": "column",
                             "margin-left": "30%",
                             "margin-right": "30%",
-                            "font-size": "40px",
                         },
                     ),
                 ],
                 id="hook_question",
-                style={"margin-top": "15%"},
             ),
         ]
     )
@@ -237,11 +230,7 @@ elif num == 3:
                 [
                     html.H1(
                         "How many billion tonnes of ice Antarctica is losing every year?",
-                        style={
-                            "margin-left": "30%",
-                            "margin-right": "30%",
-                            "font-size": "60px",
-                        },
+                        className="question",
                     ),
                     html.Div(
                         [
@@ -275,12 +264,10 @@ elif num == 3:
                             "flex-direction": "column",
                             "margin-left": "30%",
                             "margin-right": "30%",
-                            "font-size": "40px",
                         },
                     ),
                 ],
                 id="hook_question",
-                style={"margin-top": "15%"},
             ),
         ]
     )
@@ -349,11 +336,7 @@ elif num == 4:
                 [
                     html.H1(
                         "How many million tonnes of plastic is leaked to the ocean?",
-                        style={
-                            "margin-left": "30%",
-                            "margin-right": "30%",
-                            "font-size": "60px",
-                        },
+                        className="question",
                     ),
                     html.Div(
                         [
@@ -387,12 +370,10 @@ elif num == 4:
                             "flex-direction": "column",
                             "margin-left": "30%",
                             "margin-right": "30%",
-                            "font-size": "40px",
                         },
                     ),
                 ],
                 id="hook_question",
-                style={"margin-top": "15%"},
             ),
         ]
     )
@@ -461,11 +442,7 @@ else:
                 [
                     html.H1(
                         "How many percent of the global warming we are experiencing today is caused by methane in the atmosphere?",
-                        style={
-                            "margin-left": "30%",
-                            "margin-right": "30%",
-                            "font-size": "60px",
-                        },
+                        className="question",
                     ),
                     html.Div(
                         [
@@ -499,12 +476,10 @@ else:
                             "flex-direction": "column",
                             "margin-left": "30%",
                             "margin-right": "30%",
-                            "font-size": "40px",
                         },
                     ),
                 ],
                 id="hook_question",
-                style={"margin-top": "15%"},
             ),
         ]
     )

@@ -1,40 +1,33 @@
-from multiprocessing.sharedctypes import Value
-from tkinter.ttk import Style
 import dash
-from dash import html, dcc, callback, Input, Output, ctx, dcc
-from dash_extensions.enrich import DashProxy, html, Input, Output, State
-from dash_extensions import EventListener
-from dash.exceptions import PreventUpdate
-import time
+from dash import Input, Output, callback, ctx, dcc, html
 
-event = {"event": "click", "props": ["srcElement.className", "srcElement.innerText"]}
-
+dash.register_page(__name__, path="/question2")
 layout = html.Div(
     [
         html.Div(
             [
                 html.H1(
                     "How many people in the world live in areas that are 5 meters or less above sea level?",
-                    style={"margin-left": "30%", "margin-right": "30%"},
+                    className="question",
                 ),
                 html.Div(
                     [
                         html.Button(
                             "Around 11%",
                             className="stuff",
-                            id="first_button",
+                            id="ques2_first_button",
                             style={"margin": "6px"},
                         ),
                         html.Button(
                             "Around 31%",
                             className="stuff",
-                            id="second_button",
+                            id="ques2_second_button",
                             style={"margin": "6px"},
                         ),
                         html.Button(
                             "Around 51%",
                             className="stuff",
-                            id="third_button",
+                            id="ques2_third_button",
                             style={"margin": "6px"},
                         ),
                     ],
@@ -54,14 +47,14 @@ layout = html.Div(
 
 @callback(
     Output("question2", "children"),
-    Input("first_button", "n_clicks"),
-    Input("second_button", "n_clicks"),
-    Input("third_button", "n_clicks"),
+    Input("ques2_first_button", "n_clicks"),
+    Input("ques2_second_button", "n_clicks"),
+    Input("ques2_third_button", "n_clicks"),
     prevent_initial_call=True,
 )
 def update_log(b1, b2, b3):
     triggered_id = ctx.triggered_id
-    if triggered_id == "first_button" or triggered_id == "second_button":
+    if triggered_id == "ques2_first_button" or triggered_id == "ques2_second_button":
         return html.Div(
             [
                 html.H1(
@@ -73,8 +66,8 @@ def update_log(b1, b2, b3):
                     style={"margin-left": "30%", "margin-right": "30%"},
                 ),
                 dcc.Link(
-                    "To Knowledge",
-                    href="/",
+                    "Next question",
+                    href="/question3",
                     style={"margin-left": "44%", "margin-right": "30%"},
                     className="stuff",
                 ),
@@ -91,8 +84,8 @@ def update_log(b1, b2, b3):
                     style={"margin-left": "30%", "margin-right": "30%"},
                 ),
                 dcc.Link(
-                    "To Knowledge",
-                    href="/",
+                    "Next question",
+                    href="/question3",
                     style={"margin-left": "44%", "margin-right": "30%"},
                     className="stuff",
                 ),
