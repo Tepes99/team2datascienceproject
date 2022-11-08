@@ -32,12 +32,7 @@ layout = html.Div(
                             style={"margin": "6px"},
                         ),
                     ],
-                    style={
-                        "display": "flex",
-                        "flex-direction": "column",
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                    },
+                    className="answer_3",
                 ),
             ],
             id="hook_question",
@@ -60,52 +55,27 @@ def update_log(b1, b2, b3):
             [
                 html.H1(
                     "Don’t look for global warming outside your window",
-                    style={
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                        "font-size": "70px",
-                    },
+                    className="solution",
                 ),
                 dcc.Link(
                     "To Knowledge",
                     href="/question2",
-                    style={
-                        "margin-left": "44%",
-                        "margin-right": "30%",
-                        "font-size": "40px",
-                    },
-                    className="stuff",
+                    className="stuff next_button",
                 ),
             ]
         )
     else:
         return html.Div(
             [
-                html.H1(
-                    "Next question",
-                    style={
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                        "font-size": "70px",
-                    },
-                ),
+                html.H1("You are right", className="solution"),
                 html.P(
                     "But 90%% of people answer wrongly. Most people are unaware that most global warming is hiding in the seas. As long as they think global warming is all about air temperature, they won’t realize the size of the problem.",
-                    style={
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                        "font-size": "30px",
-                    },
+                    className="fact",
                 ),
                 dcc.Link(
                     "Next question",
                     href="/question2",
-                    style={
-                        "margin-left": "44%",
-                        "margin-right": "30%",
-                        "font-size": "40px",
-                    },
-                    className="stuff",
+                    className="stuff next_button",
                 ),
             ]
         )

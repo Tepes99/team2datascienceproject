@@ -421,11 +421,8 @@ layout = html.Div(
                 dcc.Link(
                     "What can you do?",
                     href="/whatif",
-                    style={
-                        "margin-left": "44%",
-                        "font-size": "40px",
-                        "order": 5,
-                    },
+                    id="what_if_button",
+                    style={"order": 5},
                 ),
             ],
             style={"display": "flex", "flex-direction": "column"},

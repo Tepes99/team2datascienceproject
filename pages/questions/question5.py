@@ -37,12 +37,7 @@ layout = html.Div(
                             style={"margin": "6px"},
                         ),
                     ],
-                    style={
-                        "display": "flex",
-                        "flex-direction": "column",
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                    },
+                    className="answer_4",
                 ),
             ],
             id="question5",
@@ -64,46 +59,22 @@ def update_log(b1, b2, b3, b4):
     if triggered_id == "second_button_quest5":
         return html.Div(
             [
-                html.H1(
-                    "Correct",
-                    style={
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                        "font-size": "70px",
-                    },
-                ),
+                html.H1("You are right", className="solution"),
                 dcc.Link(
                     "To Knowledge",
                     href="/graphs",
-                    style={
-                        "margin-left": "44%",
-                        "margin-right": "30%",
-                        "font-size": "40px",
-                    },
-                    className="stuff",
+                    className="stuff next_button",
                 ),
             ]
         )
     else:
         return html.Div(
             [
-                html.H1(
-                    "Incorrect",
-                    style={
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                        "font-size": "70px",
-                    },
-                ),
+                html.H1("Incorrect", className="solution"),
                 dcc.Link(
                     "To Knowledge",
                     href="/graphs",
-                    style={
-                        "margin-left": "44%",
-                        "margin-right": "30%",
-                        "font-size": "40px",
-                    },
-                    className="stuff",
+                    className="stuff next_button",
                 ),
             ]
         )

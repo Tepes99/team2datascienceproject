@@ -31,12 +31,7 @@ layout = html.Div(
                             style={"margin": "6px"},
                         ),
                     ],
-                    style={
-                        "display": "flex",
-                        "flex-direction": "column",
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                    },
+                    className="answer_3",
                 ),
             ],
             id="question2",
@@ -57,37 +52,30 @@ def update_log(b1, b2, b3):
     if triggered_id == "ques2_first_button" or triggered_id == "ques2_second_button":
         return html.Div(
             [
-                html.H1(
-                    " Far to the beach ",
-                    style={"margin-left": "30%", "margin-right": "30%"},
-                ),
+                html.H1(" Far to the beach ", className="solution"),
                 html.H2(
                     "Most people overestimate the population at risk from rising sea levels. When you overestimate how many homes can be reached by rising sea levels, you may think it’s impossible for so many people to find new places to live.",
-                    style={"margin-left": "30%", "margin-right": "30%"},
+                    className="fact",
                 ),
                 dcc.Link(
                     "Next question",
                     href="/question3",
-                    style={"margin-left": "44%", "margin-right": "30%"},
-                    className="stuff",
+                    className="stuff next_button",
                 ),
             ]
         )
     else:
         return html.Div(
             [
-                html.H1(
-                    "You are right", style={"margin-left": "30%", "margin-right": "30%"}
-                ),
+                html.H1("You are right", className="solution"),
                 html.H2(
                     "But 77% of people answer wrongly. Most people overestimate the population at risk from rising sea levels. When they overestimate how many homes can be reached by rising sea levels, they may think it’s impossible for so many people to find new places to live.",
-                    style={"margin-left": "30%", "margin-right": "30%"},
+                    className="fact",
                 ),
                 dcc.Link(
                     "Next question",
                     href="/question3",
-                    style={"margin-left": "44%", "margin-right": "30%"},
-                    className="stuff",
+                    className="stuff next_button",
                 ),
             ]
         )
