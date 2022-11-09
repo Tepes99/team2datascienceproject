@@ -415,15 +415,21 @@ layout = html.Div(
                             value="Afghanistan",
                         ),
                         dcc.Graph(id="teemusGraph"),
+                        dcc.Markdown('''
+                            European Comission has a great database called [EDGAR - Emissions Database for Global Atmospheric Research.](https://edgar.jrc.ec.europa.eu/emissions_data_and_maps)
+                            It allows us to see how the fight against climate change is developing in different regions.
+                            However, the raw emission data can be misleading, as it does not account for changes in population or the changes in GDP. 
+                            It is also quite common to focus only on the CO2 emissions, although other greenhouse gases also contribute significantly to the problem. 
+                            A good example is methane that contributes 25% to global warming. 
+                            Finally, the country specific data does not account for emissions resulting from imported or exported goods and services. 
+                            Thus, it has a bias towards economies that have outsourced polluting industries.
+
+                            ## [What can you do?](/whatif)
+                    '''),
                     ],
                     style={"order": 4},
                 ),
-                dcc.Link(
-                    "What can you do?",
-                    href="/whatif",
-                    id="what_if_button",
-                    style={"order": 5},
-                ),
+                
             ],
             style={"display": "flex", "flex-direction": "column"},
         ),

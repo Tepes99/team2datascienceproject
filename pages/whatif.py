@@ -48,6 +48,12 @@ layout = html.Div(
                 dcc.Graph(id="projection"),
             ],
         ),
+        dcc.Markdown('''
+        The United Nations has many sub-organizations, and one of them is [The Intergovernmental Panel on Climate Change (IPCC)](https://www.ipcc.ch/). 
+        IPCC is the scientific hub for evaluating climate change and it has many working groups focused on different aspects of climate change. 
+        Here is the graph by [Working Group III](https://www.ipcc.ch/working-group/wg3/), that illustrates the paths emissions should take to limit global warming to different levels. 
+        The ultimate goal is to limit global warming to 1.5°C, but according to IPCC this is unlikely with the current policies.
+    '''),
         html.Div(
             [
                 html.H1(
@@ -77,6 +83,13 @@ layout = html.Div(
                 dcc.Graph(id="RFF_calc"),
             ]
         ),
+        dcc.Markdown('''
+        Resources for the Future describes themselves as an independent, non-profit research institution situated in Washington, DC. 
+        Their goal is to improve the decision-making process around environmental policy, via research and policy action. 
+        Their Carbon Pricing Calculator is a great way to illustrate how different policies can have an impact on the environment. 
+        Although it is focused on the United States, it considers policy actions that are reproducible in the Nordics too. 
+        These include flat and incremental carbon taxes, with revenue recycling. You can learn more from their website [here](https://www.rff.org/publications/data-tools/carbon-pricing-calculator/).
+    '''),
     ],
 )
 
