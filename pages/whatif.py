@@ -161,9 +161,9 @@ def display_projeciton(proj):
             showline=False,
             showticklabels=True,
         ),
-        autosize=False,
+        autosize=True,
         margin=dict(
-            autoexpand=False,
+            autoexpand=True,
             l=100,
             r=20,
             t=110,
@@ -201,9 +201,9 @@ def display_area(calc_file):
             showline=False,
             showticklabels=True,
         ),
-        autosize=False,
+        autosize=True,
         margin=dict(
-            autoexpand=False,
+            autoexpand=True,
             l=100,
             r=20,
             t=110,
