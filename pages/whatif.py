@@ -40,7 +40,7 @@ layout = html.Div(
                             "value": "4",
                         },
                         {"label": "Limit warming to 2°C (>67%)", "value": "2"},
-                        {"label": "Limit warming to 2°C (>67%)", "value": "1"},
+                        {"label": "Limit warming to 1.5°C (>50%) with no or limited overshoot", "value": "1"},
                     ],
                     value="7",
                     id="projectionVal",
