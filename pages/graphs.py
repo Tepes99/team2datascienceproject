@@ -23,8 +23,8 @@ path = f"{dataPath}/EDGARv7.0_FT2021_fossil_CO2_booklet_2022.xlsx"
 # PREPROCESSING ETC => Rather not do this every update so perform here
 sector_data = pd.read_excel(io=f"{path}", sheet_name="fossil_CO2_by_sector_and_countr")
 sector_data.drop(columns=["Substance"], inplace=True)  # drop unnecessary columns
-scope = sorted([*set(sector_data["Country"])])
-scope.append("Global emissions")  # selectable countries + GLOBAL VIEW
+choices = sorted([*set(sector_data["Country"])])
+choices.append("Global emissions")  # selectable countries + GLOBAL VIEW
 
 pop_data = pd.read_csv(
     f"{dataPath}API_SP.POP.TOTL_DS2_en_csv_v2_4685015.csv", skiprows=4
@@ -227,7 +227,7 @@ layout = html.Div(
                                 html.H3("Select scope:"),
                                 dcc.Dropdown(
                                     id="scope",
-                                    options=scope,
+                                    options=choices,
                                     multi=False,
                                     value="Global emissions",
                                     style={"width": "60%"},
@@ -242,7 +242,7 @@ layout = html.Div(
                             style={"width": "50%", "margin-left": "50px"},
                         ),
                         html.Br(),
-                        dcc.Graph(id="sector_emissions_graph", style={}),
+                        dcc.Graph(id="sector_emissions_graph", style={'margin-left':'150px'}),
                         html.Br(),
                     ],
                     style={"order": 2},
