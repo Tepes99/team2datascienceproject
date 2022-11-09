@@ -9,7 +9,7 @@
   color: #fff;
   cursor: pointer;
   font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
-  font-size: 100%;
+  font-size: 200%;
   height: 100px;
   line-height: 1.15;
   margin: 12px 0 0;
@@ -33,4 +33,91 @@
 
 .stuff:focus {
   box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+}
+.question {
+  margin-left: 30%;
+  margin-right: 30%;
+  font-size: 400%;
+}
+#hook_question, [id^="question"]  {
+  margin-top: 15%;
+}
+.answer_3, .answer_4{
+  display: flex;
+  flex-direction: column;
+  margin-right: 30%;
+  margin-left: 30%
+}
+.some-page-wrapper {
+  margin: 15px;
+  background-color: red;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+.solution {
+  margin-left: 30%;
+  margin-right: 30%;
+  font-size: 70px;
+}
+.fact { 
+  margin-left: 30%;
+  margin-right: 30%;
+  font-size: 30px;
+}
+.next_button {
+  margin-right: 30%;
+  margin-left: 44%;
+  font-size: 40px;
+}
+#what_if_button {
+  margin-right: 30%;
+  margin-left: 44%;
+  font-size: 40px;
+}
+@media only screen and (max-width: 1000px) {
+  /* For mobile phones: */
+  .question, .solution{
+    margin-left: 15%;
+    margin-right: 15%;
+    font-size: 200%;
+  }
+  .fact {
+    margin-left: 15%;
+    margin-right: 15%;
+    font-size: 150%;
+  }
+  #what_if_button {
+    margin-left: 30%;
+  }
+  .next_button {
+    margin-left: 36%;
+  }
+  .stuff {
+    font-size: 150%;
+  }
+  .answer_3 {
+    flex-direction: row;
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+  .answer_4 {
+    flex-direction: row;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  #hook_question, [id^="question"]{
+    margin-top: 8%;
+  }
 }

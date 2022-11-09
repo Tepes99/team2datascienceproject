@@ -1,19 +1,15 @@
-from tkinter.ttk import Style
 import dash
-from dash import html, dcc, callback, Input, Output, ctx, dcc
-from dash_extensions.enrich import DashProxy, html, Input, Output, State
-from dash_extensions import EventListener
-from dash.exceptions import PreventUpdate
+from dash import Input, Output, callback, ctx, dcc, html
 
-event = {"event": "click", "props": ["srcElement.className", "srcElement.innerText"]}
-
+dash.register_page(__name__, path="/")
 layout = html.Div(
     [
+        html.Div([]),
         html.Div(
             [
                 html.H1(
                     "How much of the excess heat from global warming is captured in the oceans?",
-                    style={"margin-left": "30%", "margin-right": "30%"},
+                    className="question",
                 ),
                 html.Div(
                     [
@@ -36,22 +32,17 @@ layout = html.Div(
                             style={"margin": "6px"},
                         ),
                     ],
-                    style={
-                        "display": "flex",
-                        "flex-direction": "column",
-                        "margin-left": "30%",
-                        "margin-right": "30%",
-                    },
+                    className="answer_3",
                 ),
             ],
-            id="question1",
+            id="hook_question",
         ),
     ]
 )
 
 
 @callback(
-    Output("question1", "children"),
+    Output("hook_question", "children"),
     Input("first_button", "n_clicks"),
     Input("second_button", "n_clicks"),
     Input("third_button", "n_clicks"),
@@ -64,31 +55,27 @@ def update_log(b1, b2, b3):
             [
                 html.H1(
                     "Don’t look for global warming outside your window",
-                    style={"margin-left": "30%", "margin-right": "30%"},
+                    className="solution",
                 ),
                 dcc.Link(
                     "To Knowledge",
-                    href="/",
-                    style={"margin-left": "44%", "margin-right": "30%"},
-                    className="stuff",
+                    href="/question2",
+                    className="stuff next_button",
                 ),
             ]
         )
     else:
         return html.Div(
             [
-                html.H1(
-                    "You are right", style={"margin-left": "30%", "margin-right": "30%"}
-                ),
-                html.H2(
+                html.H1("You are right", className="solution"),
+                html.P(
                     "But 90%% of people answer wrongly. Most people are unaware that most global warming is hiding in the seas. As long as they think global warming is all about air temperature, they won’t realize the size of the problem.",
-                    style={"margin-left": "30%", "margin-right": "30%"},
+                    className="fact",
                 ),
                 dcc.Link(
-                    "To Knowledge",
-                    href="/",
-                    style={"margin-left": "44%", "margin-right": "30%"},
-                    className="stuff",
+                    "Next question",
+                    href="/question2",
+                    className="stuff next_button",
                 ),
             ]
         )
