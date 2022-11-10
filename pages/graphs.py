@@ -118,10 +118,16 @@ def country_to_continent(country_name):
         return "Unspecified"
     return country_continent_name
 
+# Hard code spain
+df_CO2_country.loc[df_CO2_country['EDGAR Country Code'] == 'ESP', 'Country'] = 'Spain'
 
 df_CO2_country["Continent"] = df_CO2_country["Country"].apply(
     lambda x: country_to_continent(x)
 )
+
+# Hard code france
+df_CO2_country.loc[df_CO2_country['EDGAR Country Code'] == 'FRA', 'Continent'] = 'Europe'
+
 
 region = [
     {"label": c, "value": c}
