@@ -221,8 +221,23 @@ teemusData = teemusData[1:]
 
 layout = html.Div(
     children=[
+         html.H1(
+                            "Introduction,", style={"text-align": "center"}
+                        ),
+        dbc.Col(
+                            dcc.Markdown('''
+
+Climate change is one of the most significant challenges that humanity is currently facing. Economic and population growth comes with more emissions. The emissions are distributed globally and over a wide range of societal activities, and are likely to cause widespread social, economic, and ecosystem damage if not limited.  Therefore, it is important that all countries in the world try to tackle these global issues together. 
+This website is created to communicate the emission reduction momentum to more audiences. 
+                                    '''),
+                                ),
+        
+        
+
         dbc.Row(
-            [
+            [   html.H1(
+                            "CO2 emissions per sector", style={"text-align": "center"}
+                        ),
                 dbc.Row(
                     [
                         html.H1(
