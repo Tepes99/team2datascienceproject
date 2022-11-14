@@ -589,6 +589,8 @@ def update_graph_co2_by_region(
         basemap_visible=True,
         # center = center_dict[region_slctd]
     )
+    fig.update_geos(fitbounds="locations")
+
     fig.update_layout(
         autosize=False,
         margin=dict(l=0, r=0, b=0, t=0, pad=4, autoexpand=True),
