@@ -6,7 +6,7 @@ from dash import Dash, dcc, html
 app = dash.Dash(
     __name__,
     use_pages=True,
-    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    external_stylesheets=[dbc.themes.LUX],
     meta_tags=[
         {
             "name": "viewport",
