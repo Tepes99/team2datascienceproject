@@ -33,11 +33,24 @@ teemusData = teemusData[1:]
 projectionData = pd.read_csv(f"{dataPath}/GHG_projection.csv")
 projectionData.columns = projectionData.columns.str.strip()
 layout = html.Div(
+
     children=[
         dbc.Row(
             [
+                dbc.NavbarSimple(
+                    children=[
+                        dbc.NavItem(dbc.NavLink("Questionnaire", href="/..")),
+                        dbc.NavItem(dbc.NavLink("Home", href="graphs")),
+                        dbc.NavItem(dbc.NavLink("Future", href="#")),
+                        dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                    ],
+                    brand="Home",
+                    brand_href="graphs",
+                    color="primary",
+                    dark=True,
+                ),
                 html.H1(
-                    "Global GHG emissions by scenario", style={"text-align": "center"}
+                    "Global GHG emissions by scenario", style={"margin-top":"5%","text-align": "center"}
                 ),
                 dbc.Label("Choose between total emissions, per capita and per GDP",
                 style={"width": "100%", "display": "flex", 'textAlign': 'left','margin': "2%"}
@@ -59,7 +72,7 @@ layout = html.Div(
                     id="projectionVal",
                     style={"margin":"2%"}
                 ),
-                dcc.Graph(id="projection"),
+                dcc.Graph(id="projection", style={"height":"45vh"}),
                 dcc.Markdown("""
                     The United Nations has many sub-organizations, and one of them is [The Intergovernmental Panel on Climate Change (IPCC)](https://www.ipcc.ch/). 
                     IPCC is the scientific hub for evaluating climate change and it has many working groups focused on different aspects of climate change. 
@@ -96,7 +109,7 @@ layout = html.Div(
                     id="RFF_calc_file",
                     style={"margin":"2%"}
                 ),
-                dcc.Graph(id="RFF_calc"),
+                dcc.Graph(id="RFF_calc", style={"height":"45vh"}),
                 dcc.Markdown("""
                     Resources for the Future describes themselves as an independent, non-profit research institution situated in Washington, DC. 
                     Their goal is to improve the decision-making process around environmental policy, via research and policy action. 
@@ -166,8 +179,20 @@ layout = html.Div(
                     ]
                 ),
             ],
-            style={"font-size": "30px", "margin-left": "30%"},
+            style={"font-size": "30px", "margin-left": "30%","margin-bottom":"5%"},
         ),
+        dbc.NavbarSimple(
+            children=[
+                dbc.NavItem(dbc.NavLink("Questionnaire", href="/..")),
+                dbc.NavItem(dbc.NavLink("Home", href="graphs")),
+                dbc.NavItem(dbc.NavLink("Future", href="#")),
+                dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+            ],
+            brand="Up",
+            brand_href="#",
+            color="primary",
+            dark=True,
+        )
     ],
 )
 

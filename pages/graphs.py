@@ -221,22 +221,33 @@ teemusData = teemusData[1:]
 
 layout = html.Div(
     children=[
-         html.H1(
-                    "Introduction", style={"text-align": "center"}
-                        ),
-            dcc.Markdown('''
-                Climate change is one of the most significant challenges that humanity is currently facing. 
-                Economic and population growth comes with more emissions. 
-                The emissions are distributed globally and over a wide range of societal activities, and are likely to cause widespread social, economic, and ecosystem damage if not limited.  
-                Therefore, it is important that all countries in the world try to tackle these global issues together. 
-                This website is created to communicate the emission reduction momentum to more audiences. 
-            ''',style={"margin":"2%"}),
-
-        
         dbc.Row(
             [   
+                dbc.NavbarSimple(
+                            children=[
+                                dbc.NavItem(dbc.NavLink("Questionnaire", href="/..")),
+                                dbc.NavItem(dbc.NavLink("Home", href="#")),
+                                dbc.NavItem(dbc.NavLink("Future", href="whatif")),
+                                dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                            ],
+                            brand="Home",
+                            brand_href="graphs",
+                            color="primary",
+                            dark=True,
+                        ),
+                        html.H1(
+                            "Introduction", style={"margin-top":"5%","text-align": "center"}
+                        ),
+                        dcc.Markdown('''
+                            Climate change is one of the most significant challenges that humanity is currently facing. 
+                            Economic and population growth comes with more emissions. 
+                            The emissions are distributed globally and over a wide range of societal activities, and are likely to cause widespread social, economic, and ecosystem damage if not limited.  
+                            Therefore, it is important that all countries in the world try to tackle these global issues together. 
+                            This website is created to communicate the emission reduction momentum to more audiences. 
+                        ''',style={"margin":"2%"}),
                 dbc.Row(
                     [
+                        
                         html.H1(
                             "CO2 emissions per sector", style={"text-align": "center"}
                         ),
@@ -260,7 +271,7 @@ layout = html.Div(
                             style={"width": "50%", "margin-left": "50px"},
                         ),
                         html.Br(),
-                        dcc.Graph(id="sector_emissions_graph", style={'margin-left':'150px'}),
+                        dcc.Graph(id="sector_emissions_graph", style={'marggin':"2%","height":"45vh"}),
 
 
                         dcc.Markdown('''
@@ -291,13 +302,12 @@ layout = html.Div(
                             inline=False,
                             labelStyle={
                                 "display": "inline-block",
-                                "margin-right": "15px",
                             }
                             ,style={"margin":"2%"} 
                         ),
                         html.Br(),
                         dcc.Graph(
-                            id="co2_graph", figure={}, style={"margin-left": "10px"}
+                            id="co2_graph", figure={}, style={"margin": "2%","height":"50vh"}
                         ),
                         html.Br(),
                         html.Div(
@@ -422,7 +432,7 @@ layout = html.Div(
                             multi=False,
                             value="Total",
                         ),
-                        dcc.Graph(id="selinsGraph"),
+                        dcc.Graph(id="selinsGraph",style={"height":"70vh"}),
                         dcc.Markdown('''
                             According to [Statista](https://www.statista.com/topics/4958/emissions-in-the-european-union/#dossierKeyfigures), countries of European Union (EU-27) emits
                             more than 240 billion metric tons of CO2 equivalent (GtCO2e) into the atmosphere since the industrial evolution, which makes up approximately 18% of total historical global
@@ -432,7 +442,7 @@ layout = html.Div(
                             The European Council has adopted the European climate law in 2021. With it, EU countries are legally oblidged to 
                             cut at least 55% emissions by 2030 and achieve climate-neutrality to reach a net-zero emissions balance by 2050. In order to meet this agreement, different EU countries in Europe have adopted policies for different sectors. 
                             In this graph, we can explore the number of  policies adopted in different countries in Europe by sector. 
-                        ''',style={"margin":"0%"}),
+                        '''),
                     ],
                     style={"order": 4,"margin":"2%"},
                 ),
@@ -478,7 +488,7 @@ layout = html.Div(
                             options=list(teemusData.columns.values),
                             value="Afghanistan",
                         ),
-                        dcc.Graph(id="teemusGraph"),
+                        dcc.Graph(id="teemusGraph", style={"height":"45vh"}),
                         dcc.Markdown('''
                             European Comission has a great database called [EDGAR - Emissions Database for Global Atmospheric Research.](https://edgar.jrc.ec.europa.eu/emissions_data_and_maps)
                             It allows us to see how the fight against climate change is developing in different regions.
@@ -487,9 +497,22 @@ layout = html.Div(
                             A good example is methane that contributes 25% to global warming. 
                             Finally, the country specific data does not account for emissions resulting from imported or exported goods and services. 
                             Thus, it has a bias towards economies that have outsourced polluting industries.
-
-                            ## [What can you do?](/whatif)
-                        ''',style={"margin":"0%"}),  
+                        ''',style={"margin":"0%"}),
+                        dcc.Markdown("""
+                        ## [What can you do?](/whatif)
+                        """,style={"height":"5vh"}),
+                        dbc.NavbarSimple(
+                            children=[
+                                dbc.NavItem(dbc.NavLink("Questionnaire", href="/..")),
+                                dbc.NavItem(dbc.NavLink("Home", href="#")),
+                                dbc.NavItem(dbc.NavLink("Future", href="whatif")),
+                                dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                            ],
+                            brand="Up",
+                            brand_href="#",
+                            color="primary",
+                            dark=True,
+                        )  
                     ],
                     style={"order": 5,"margin":"2%"},
                 ),
