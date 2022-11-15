@@ -224,15 +224,14 @@ layout = html.Div(
          html.H1(
                     "Introduction", style={"text-align": "center"}
                         ),
-        dbc.Col(
             dcc.Markdown('''
                 Climate change is one of the most significant challenges that humanity is currently facing. 
                 Economic and population growth comes with more emissions. 
                 The emissions are distributed globally and over a wide range of societal activities, and are likely to cause widespread social, economic, and ecosystem damage if not limited.  
                 Therefore, it is important that all countries in the world try to tackle these global issues together. 
                 This website is created to communicate the emission reduction momentum to more audiences. 
-                                        '''),
-                ),
+            '''),
+
         
         dbc.Row(
             [   html.H1(
@@ -278,23 +277,13 @@ layout = html.Div(
                             ],
                         ),
                         html.Br(),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    width=0.5, 
-                                ),
-                                dbc.Col(
-                                    dcc.Markdown('''
-                                        CO2 emitted into the atmosphere comes from different types of activities. Some sectors produce far more carbon emissions than others.
-                                        With the issue of climate change far from resolved, understanding the determinants behind the emission levels can help us prioritize appropriate actions and improve guide policy making.
-                                        This chart shows the breakdown of CO2 emissions across sectors (power industry, buildings, transport, other industrial combustion, and other sectors). 
-                                        The data used in the graph is adopted from [EDGAR - Emissions Database for Global Atmospheric Research](https://edgar.jrc.ec.europa.eu/emissions_data_and_maps).
-                                    '''),
-                                ),
-                            ],
-                        ),
                         
-                        
+                        dcc.Markdown('''
+                            CO2 emitted into the atmosphere comes from different types of activities. Some sectors produce far more carbon emissions than others.
+                            With the issue of climate change far from resolved, understanding the determinants behind the emission levels can help us prioritize appropriate actions and improve guide policy making.
+                            This chart shows the breakdown of CO2 emissions across sectors (power industry, buildings, transport, other industrial combustion, and other sectors). 
+                            The data used in the graph is adopted from [EDGAR - Emissions Database for Global Atmospheric Research](https://edgar.jrc.ec.europa.eu/emissions_data_and_maps).
+                        '''),    
                     ],
                     style={"order": 2},
                 ),
@@ -348,28 +337,16 @@ layout = html.Div(
                             style={"text-align": "center", "font-size": "25px"},
                         ),
                         html.Br(),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    width=0.5, 
-                                ),
-                                dbc.Col(
-                                    dcc.Markdown('''
-                                        What are the average emissions per person? Where in the world does the average person emit the most CO2 each year?
+                        dcc.Markdown('''
+                            What are the average emissions per person? Where in the world does the average person emit the most CO2 each year?
 
 
-                                        Different metrics capture different stories.  A per capita view offers an important perspective on the 
-                                        global CO2 challenge and gives a clear point of how much each person can reduce emissions 
-                                        to together tackle this climate change.  In this interactive map, you can explore the differences in CO2
-                                        per capita emissions, which is the average amount of CO2 emitted by each  citizen of each country, across the world and over time. 
-                                        In general, there are very large inequalities in per capita emissions across the world.                            
-                                    '''),
-                                ),
-                            ],
-                        ),
-
-                        
-
+                            Different metrics capture different stories.  A per capita view offers an important perspective on the 
+                            global CO2 challenge and gives a clear point of how much each person can reduce emissions 
+                            to together tackle this climate change.  In this interactive map, you can explore the differences in CO2
+                            per capita emissions, which is the average amount of CO2 emitted by each  citizen of each country, across the world and over time. 
+                            In general, there are very large inequalities in per capita emissions across the world.                            
+                        '''),
                     ],
                     style={
                         "order": 1,
@@ -423,27 +400,18 @@ layout = html.Div(
 
                     '''),
                     html.Br(),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    width=0.5, 
-                                ),
-                                dbc.Col(
-                                    dcc.Markdown('''
-                                        What explains the variation in CO2 emissions per capita?
-                                        Since the industrial revolution, economic activities has significantly increased. However, eonomic growth comes with a cost. 
-                                        According to [National Oceanic and Atmostpheric Administration], humans have generated an estimated 1.5 trillion tons of CO2 pollution since then,
-                                        much of which will continue to warm the atmosphere for thousands of years.
+                    dcc.Markdown('''
+                        What explains the variation in CO2 emissions per capita?
+                        Since the industrial revolution, economic activities has significantly increased. However, eonomic growth comes with a cost. 
+                        According to [National Oceanic and Atmostpheric Administration], humans have generated an estimated 1.5 trillion tons of CO2 pollution since then,
+                        much of which will continue to warm the atmosphere for thousands of years.
 
-                                        The health of a country's economy and welfare is measured by Gross Dosmetic Product (GDP). It represents the value of all goods and services produced 
-                                        over a specific time period within a country's borders. This graph shows the correlation between gross domestic product (GDP) per capita and CO2 per capita.
-                                        In general, there is a strong link between the amount of CO2 emitted and the standards of living. A brief look at the graph shows that emissions are rising as the economy grows. 
-                                        However, Nordic countries are examples of opposite trend which illustrates that we together can make effort to reduce the CO2 emissiond while 
-                                        keeping the GDP per capita high.                          
-                                    '''),
-                                ),
-                            ],
-                        ),
+                        The health of a country's economy and welfare is measured by Gross Dosmetic Product (GDP). It represents the value of all goods and services produced 
+                        over a specific time period within a country's borders. This graph shows the correlation between gross domestic product (GDP) per capita and CO2 per capita.
+                        In general, there is a strong link between the amount of CO2 emitted and the standards of living. A brief look at the graph shows that emissions are rising as the economy grows. 
+                        However, Nordic countries are examples of opposite trend which illustrates that we together can make effort to reduce the CO2 emissiond while 
+                        keeping the GDP per capita high.                          
+                    '''),
                     ],
                     style={"order": 3},
                 ),
@@ -469,28 +437,16 @@ layout = html.Div(
                             value="Total",
                         ),
                         dcc.Graph(id="selinsGraph"),
-                        html.Br(),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    width=0.5, 
-                                ),
-                                dbc.Col(
-                                    dcc.Markdown('''
-                                         According to [Statista](https://www.statista.com/topics/4958/emissions-in-the-european-union/#dossierKeyfigures), countries of European Union (EU-27) emits
-                                        more than 240 billion metric tons of CO2 equivalent (GtCO2e) into the atmosphere since the industrial evolution, which makes up approximately 18% of total historical global
-                                        greenhouse gases emissions. 
+                        dcc.Markdown('''
+                            According to [Statista](https://www.statista.com/topics/4958/emissions-in-the-european-union/#dossierKeyfigures), countries of European Union (EU-27) emits
+                            more than 240 billion metric tons of CO2 equivalent (GtCO2e) into the atmosphere since the industrial evolution, which makes up approximately 18% of total historical global
+                            greenhouse gases emissions. 
 
-                                        Current policies to reduce, or at least slow down growth, in CO2 and other greenhouse gas emissions will have some impact on tackling this global issues.
-                                        The European Council has adopted the European climate law in 2021. With it, EU countries are legally oblidged to 
-                                        cut at least 55% emissions by 2030 and achieve climate-neutrality to reach a net-zero emissions balance by 2050. In order to meet this agreement, different EU countries in Europe have adopted policies for different sectors. 
-                                        In this graph, we can explore the number of  policies adopted in different countries in Europe by sector. 
-                        
-                                    '''),
-                                ),
-                            ],
-                        ),
-                        
+                            Current policies to reduce, or at least slow down growth, in CO2 and other greenhouse gas emissions will have some impact on tackling this global issues.
+                            The European Council has adopted the European climate law in 2021. With it, EU countries are legally oblidged to 
+                            cut at least 55% emissions by 2030 and achieve climate-neutrality to reach a net-zero emissions balance by 2050. In order to meet this agreement, different EU countries in Europe have adopted policies for different sectors. 
+                            In this graph, we can explore the number of  policies adopted in different countries in Europe by sector. 
+                        '''),
                     ],
                     style={"order": 4},
                 ),
@@ -537,31 +493,19 @@ layout = html.Div(
                             value="Afghanistan",
                         ),
                         dcc.Graph(id="teemusGraph"),
-                        html.Br(),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    width=0.5, 
-                                ),
-                                dbc.Col(
-                                    dcc.Markdown('''
-                                        European Comission has a great database called [EDGAR - Emissions Database for Global Atmospheric Research.](https://edgar.jrc.ec.europa.eu/emissions_data_and_maps)
-                                        It allows us to see how the fight against climate change is developing in different regions.
-                                        However, the raw emission data can be misleading, as it does not account for changes in population or the changes in GDP. 
-                                        It is also quite common to focus only on the CO2 emissions, although other greenhouse gases also contribute significantly to the problem. 
-                                        A good example is methane that contributes 25% to global warming. 
-                                        Finally, the country specific data does not account for emissions resulting from imported or exported goods and services. 
-                                        Thus, it has a bias towards economies that have outsourced polluting industries.
+                        dcc.Markdown('''
+                            European Comission has a great database called [EDGAR - Emissions Database for Global Atmospheric Research.](https://edgar.jrc.ec.europa.eu/emissions_data_and_maps)
+                            It allows us to see how the fight against climate change is developing in different regions.
+                            However, the raw emission data can be misleading, as it does not account for changes in population or the changes in GDP. 
+                            It is also quite common to focus only on the CO2 emissions, although other greenhouse gases also contribute significantly to the problem. 
+                            A good example is methane that contributes 25% to global warming. 
+                            Finally, the country specific data does not account for emissions resulting from imported or exported goods and services. 
+                            Thus, it has a bias towards economies that have outsourced polluting industries.
 
-                                        ## [What can you do?](/whatif)
-                                    '''),
-                                ),
-                            ],
-                        ),
-                        
-                        
+                            ## [What can you do?](/whatif)
+                        '''),  
                     ],
-                    style={"order": 4},
+                    style={"order": 5},
                 ),
                 
             ],
