@@ -52,9 +52,7 @@ layout = html.Div(
                 html.H1(
                     "Global GHG emissions by scenario", style={"margin-top":"5%","text-align": "center"}
                 ),
-                dbc.Label("Choose between total emissions, per capita and per GDP",
-                style={'margin': "2%"}
-                ),
+
                 dbc.RadioItems(
                     options=[
                         {"label": "Trend from implemented policies", "value": "7"},
