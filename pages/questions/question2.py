@@ -49,6 +49,10 @@ layout = html.Div(
             ],
             id="question2",
         ),
+        dcc.Markdown(""" 
+        ### Questionnaire inspired by [GapMinder's climate action questionnaire](https://upgrader.gapminder.org/t/sdg-world-13/)
+        """, style={"margin-top":"5%", 'textAlign': 'center',}
+        ),
     ]
 )
 
