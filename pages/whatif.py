@@ -33,7 +33,6 @@ teemusData = teemusData[1:]
 projectionData = pd.read_csv(f"{dataPath}/GHG_projection.csv")
 projectionData.columns = projectionData.columns.str.strip()
 layout = html.Div(
-
     children=[
         dbc.Row(
             [
@@ -42,7 +41,12 @@ layout = html.Div(
                         dbc.NavItem(dbc.NavLink("Questionnaire", href="/..")),
                         dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                         dbc.NavItem(dbc.NavLink("Future", href="#")),
-                        dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                        dbc.NavItem(
+                            dbc.NavLink(
+                                "GitHub",
+                                href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master",
+                            )
+                        ),
                     ],
                     brand="Home",
                     brand_href="graphs",
@@ -50,9 +54,9 @@ layout = html.Div(
                     dark=True,
                 ),
                 html.H1(
-                    "Global GHG emissions by scenario", style={"margin-top":"5%","text-align": "center"}
+                    "Global GHG emissions by scenario",
+                    style={"margin-top": "5%", "text-align": "center"},
                 ),
-
                 dbc.RadioItems(
                     options=[
                         {"label": "Trend from implemented policies", "value": "7"},
@@ -68,18 +72,26 @@ layout = html.Div(
                     ],
                     value="7",
                     id="projectionVal",
-                    style={"margin":"2%"}
+                    style={"margin": "2%"},
                 ),
-                dcc.Graph(id="projection", style={"height":"45vh"}),
-                dcc.Markdown("""
+                dcc.Graph(id="projection", style={"height": "45vh"}),
+                dcc.Markdown(
+                    """
                     The United Nations has many sub-organizations, and one of them is [The Intergovernmental Panel on Climate Change (IPCC)](https://www.ipcc.ch/). 
                     IPCC is the scientific hub for evaluating climate change and it has many working groups focused on different aspects of climate change. 
                     Here is the graph by [Working Group III](https://www.ipcc.ch/working-group/wg3/), that illustrates the paths emissions should take to limit global warming to different levels. 
                     The ultimate goal is to limit global warming to 1.5°C, but according to IPCC this is unlikely with the current policies.
-                """, style={"width": "100%", "display": "flex", 'textAlign': 'left','margin': "2%", "justify-content":"center"}),
+                """,
+                    style={
+                        "width": "100%",
+                        "display": "flex",
+                        "textAlign": "left",
+                        "margin": "2%",
+                        "justify-content": "center",
+                    },
+                ),
             ],
         ),
- 
         dbc.Row(
             [
                 html.H1(
@@ -96,39 +108,42 @@ layout = html.Div(
                             "label": "Cumulative Emissions",
                             "value": "RFF_Cumulative_EmissionsL.csv",
                         },
-                        {
-                            "label": "Carbon Price", 
-                        "value": "RFF_Carbon_Price.csv"
-                        },
+                        {"label": "Carbon Price", "value": "RFF_Carbon_Price.csv"},
                         {
                             "label": "Annual Revenues",
                             "value": "RFF_Annual_RevenuesL.csv",
                         },
                         {
                             "label": "Consumer Prices % Change in 2030 Compared to Business as Usual",
-                            "value": "RFF_Consumer_Prices.csv"
+                            "value": "RFF_Consumer_Prices.csv",
                         },
                     ],
                     value="RFF_Annual_EmissionsL.csv",
                     id="RFF_calc_file",
-                    style={"margin":"2%"}
+                    style={"margin": "2%"},
                 ),
-                dcc.Graph(id="RFF_calc", style={"height":"45vh"}),
-                dcc.Markdown("""
+                dcc.Graph(id="RFF_calc", style={"height": "45vh"}),
+                dcc.Markdown(
+                    """
                     Resources for the Future describes themselves as an independent, non-profit research institution situated in Washington, DC. 
                     Their goal is to improve the decision-making process around environmental policy, via research and policy action. 
                     [Their Carbon Pricing Calculator](https://www.rff.org/publications/data-tools/carbon-pricing-calculator/) is a great way to illustrate how different policies can have an impact on the environment. 
                     Although it is focused on the United States, it considers policy actions that are reproducible in the Nordics too. 
                     These include flat and incremental carbon taxes, with revenue recycling. You can learn more from their website [here](https://www.rff.org/).
-                """, style={"width": "100%", "display": "flex", 'textAlign': 'left','margin': "2%", "justify-content":"center"}),
-
+                """,
+                    style={
+                        "width": "100%",
+                        "display": "flex",
+                        "textAlign": "left",
+                        "margin": "2%",
+                        "justify-content": "center",
+                    },
+                ),
             ]
         ),
-        
- 
-        html.Div(
+        dbc.Row(
             [
-                html.Div(
+                dbc.Col(
                     [
                         "What you can do:",
                         dcc.Checklist(
@@ -139,8 +154,6 @@ layout = html.Div(
                                 "Decrease car usage by x%",
                             ],
                             id="car_check",
-
-                            
                         ),
                         dcc.Input(id="car_usage", min=0, max=100, value=5),
                         dcc.Checklist(
@@ -157,9 +170,10 @@ layout = html.Div(
                             id="shower_check",
                         ),
                         dcc.Input(type="hidden", id="shower_usage", min=0, max=100),
-                    ]
+                    ],
+                    width={"offset": 3},
                 ),
-                html.Div(
+                dbc.Col(
                     [
                         dcc.RadioItems(
                             [
@@ -175,8 +189,7 @@ layout = html.Div(
                             ],
                             style={"margin": "6px"},
                             id="reduce_scope",
-                            value= "Just you",
-                            
+                            value="Just you",
                         ),
                         html.Div(
                             [
@@ -186,24 +199,34 @@ layout = html.Div(
                                 ),
                             ]
                         ),
-                        html.Div(id="my-output"),
-                    ]
+                    ],
                 ),
             ],
-            style={"font-size": "30px", "margin-left": "30%","margin-bottom":"5%"},
+            style={"font-size": "30px"},
+        ),
+        dbc.Row(
+            dbc.Col(
+                [html.Div(id="my-output", style={"font-size": "300%", "color": "red"})],
+                width={"offset": 3},
+            )
         ),
         dbc.NavbarSimple(
             children=[
                 dbc.NavItem(dbc.NavLink("Questionnaire", href="/..")),
                 dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                 dbc.NavItem(dbc.NavLink("Future", href="#")),
-                dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                dbc.NavItem(
+                    dbc.NavLink(
+                        "GitHub",
+                        href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master",
+                    )
+                ),
             ],
             brand="Up",
             brand_href="#",
             color="primary",
             dark=True,
-        )
+        ),
     ],
 )
 
@@ -422,7 +445,7 @@ def display_projeciton(proj):
             t=110,
         ),
         showlegend=True,
-        legend_orientation = "h",
+        legend_orientation="h",
         plot_bgcolor="white",
     )
 
@@ -436,9 +459,9 @@ def display_area(calc_file):
     if calc_file == "RFF_Consumer_Prices.csv":
         fig = go.Figure()
         for colName in df.columns[1:]:
-            fig.add_trace(go.Bar(y= df[colName], x= df["Category"], name=colName))
+            fig.add_trace(go.Bar(y=df[colName], x=df["Category"], name=colName))
     else:
-        fig = px.line(df, x=df["Year"], y = df.columns[2], color= df["Policy"])
+        fig = px.line(df, x=df["Year"], y=df.columns[2], color=df["Policy"])
     fig.update_layout(
         xaxis=dict(
             showline=True,
@@ -467,9 +490,9 @@ def display_area(calc_file):
             t=110,
         ),
         showlegend=True,
-        legend_orientation = "h",
-        legend_borderwidth = 0,
-        legend_y = -0.2,
+        legend_orientation="h",
+        legend_borderwidth=0,
+        legend_y=-0.2,
         plot_bgcolor="white",
     )
     return fig
