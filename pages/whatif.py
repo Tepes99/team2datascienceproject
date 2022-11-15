@@ -98,11 +98,17 @@ layout = html.Div(
                             "label": "Cumulative Emissions",
                             "value": "RFF_Cumulative_EmissionsL.csv",
                         },
-                        {"label": "Carbon Price", 
-                        "value": "RFF_Carbon_Price.csv"},
+                        {
+                            "label": "Carbon Price", 
+                        "value": "RFF_Carbon_Price.csv"
+                        },
                         {
                             "label": "Annual Revenues",
                             "value": "RFF_Annual_RevenuesL.csv",
+                        },
+                        {
+                            "label": "Consumer Prices % Change in 2030 Compared to Business as Usual",
+                            "value": "RFF_Consumer_Prices.csv"
                         },
                     ],
                     value="RFF_Annual_EmissionsL.csv",
@@ -429,8 +435,12 @@ def display_projeciton(proj):
 @callback(Output("RFF_calc", "figure"), Input("RFF_calc_file", "value"))
 def display_area(calc_file):
     df = pd.read_csv(f"{dataPath}/{calc_file}")
-    fig = px.line(df, x=df["Year"], y=df.columns[2], color=df["Policy"])
-
+    if calc_file == "RFF_Consumer_Prices.csv":
+        fig = go.Figure()
+        for colName in df.columns[1:]:
+            fig.add_trace(go.Bar(y= df[colName], x= df["Category"], name=colName))
+    else:
+        fig = px.line(df, x=df["Year"], y = df.columns[2], color= df["Policy"])
     fig.update_layout(
         xaxis=dict(
             showline=True,
