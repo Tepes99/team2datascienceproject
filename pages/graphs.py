@@ -230,13 +230,11 @@ layout = html.Div(
                 The emissions are distributed globally and over a wide range of societal activities, and are likely to cause widespread social, economic, and ecosystem damage if not limited.  
                 Therefore, it is important that all countries in the world try to tackle these global issues together. 
                 This website is created to communicate the emission reduction momentum to more audiences. 
-            '''),
+            ''',style={"margin":"2%"}),
 
         
         dbc.Row(
-            [   html.H1(
-                            "CO2 emissions per sector", style={"text-align": "center"}
-                        ),
+            [   
                 dbc.Row(
                     [
                         html.H1(
@@ -263,27 +261,15 @@ layout = html.Div(
                         ),
                         html.Br(),
                         dcc.Graph(id="sector_emissions_graph", style={'margin-left':'150px'}),
-                        html.Br(),
-                        dbc.Row(
-                            [
-                                dbc.Col(
-                                    width=0.5, 
-                                ),
-                                dbc.Col(
-                                    dcc.Markdown('''
-                                        Which sectors are the main contributors to CO2 emissions?
-                                        '''),
-                                ),
-                            ],
-                        ),
-                        html.Br(),
-                        
+
+
                         dcc.Markdown('''
+                            Which sectors are the main contributors to CO2 emissions?
                             CO2 emitted into the atmosphere comes from different types of activities. Some sectors produce far more carbon emissions than others.
                             With the issue of climate change far from resolved, understanding the determinants behind the emission levels can help us prioritize appropriate actions and improve guide policy making.
                             This chart shows the breakdown of CO2 emissions across sectors (power industry, buildings, transport, other industrial combustion, and other sectors). 
                             The data used in the graph is adopted from [EDGAR - Emissions Database for Global Atmospheric Research](https://edgar.jrc.ec.europa.eu/emissions_data_and_maps).
-                        '''),    
+                        ''',style={"margin":"2%"}),    
                     ],
                     style={"order": 2},
                 ),
@@ -294,7 +280,7 @@ layout = html.Div(
                         ),
                         html.Div(
                             children=[
-                                html.H3("Choose a region:"),
+                                html.H3("Choose a region:",style={"margin":"2%"}),
                             ],
                             style={"width": "100%"},
                         ),
@@ -303,11 +289,11 @@ layout = html.Div(
                             options=region,
                             value="World",
                             inline=False,
-                            # style={'margin-left':'50px'},
                             labelStyle={
                                 "display": "inline-block",
                                 "margin-right": "15px",
-                            },  # block for column, inline-block for line
+                            }
+                            ,style={"margin":"2%"} 
                         ),
                         html.Br(),
                         dcc.Graph(
@@ -346,7 +332,7 @@ layout = html.Div(
                             to together tackle this climate change.  In this interactive map, you can explore the differences in CO2
                             per capita emissions, which is the average amount of CO2 emitted by each  citizen of each country, across the world and over time. 
                             In general, there are very large inequalities in per capita emissions across the world.                            
-                        '''),
+                        ''',style={"margin":"2%"}),
                     ],
                     style={
                         "order": 1,
@@ -411,9 +397,9 @@ layout = html.Div(
                         In general, there is a strong link between the amount of CO2 emitted and the standards of living. A brief look at the graph shows that emissions are rising as the economy grows. 
                         However, Nordic countries are examples of opposite trend which illustrates that we together can make effort to reduce the CO2 emissiond while 
                         keeping the GDP per capita high.                          
-                    '''),
+                    ''',style={"margin":"0%"}),
                     ],
-                    style={"order": 3},
+                    style={"order": 3,"margin":"2%"},
                 ),
                 dbc.Row(
                     [
@@ -446,9 +432,9 @@ layout = html.Div(
                             The European Council has adopted the European climate law in 2021. With it, EU countries are legally oblidged to 
                             cut at least 55% emissions by 2030 and achieve climate-neutrality to reach a net-zero emissions balance by 2050. In order to meet this agreement, different EU countries in Europe have adopted policies for different sectors. 
                             In this graph, we can explore the number of  policies adopted in different countries in Europe by sector. 
-                        '''),
+                        ''',style={"margin":"0%"}),
                     ],
-                    style={"order": 4},
+                    style={"order": 4,"margin":"2%"},
                 ),
                 dbc.Row(
                     [
@@ -503,9 +489,9 @@ layout = html.Div(
                             Thus, it has a bias towards economies that have outsourced polluting industries.
 
                             ## [What can you do?](/whatif)
-                        '''),  
+                        ''',style={"margin":"0%"}),  
                     ],
-                    style={"order": 5},
+                    style={"order": 5,"margin":"2%"},
                 ),
                 
             ],

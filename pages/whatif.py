@@ -39,7 +39,9 @@ layout = html.Div(
                 html.H1(
                     "Global GHG emissions by scenario", style={"text-align": "center"}
                 ),
-                dbc.Label("Choose between total emissions, per capita and per GDP"),
+                dbc.Label("Choose between total emissions, per capita and per GDP",
+                style={"width": "100%", "display": "flex", 'textAlign': 'left','margin': "2%"}
+                ),
                 dbc.RadioItems(
                     options=[
                         {"label": "Trend from implemented policies", "value": "7"},
@@ -55,6 +57,7 @@ layout = html.Div(
                     ],
                     value="7",
                     id="projectionVal",
+                    style={"margin":"2%"}
                 ),
                 dcc.Graph(id="projection"),
                 dcc.Markdown("""
@@ -62,10 +65,9 @@ layout = html.Div(
                     IPCC is the scientific hub for evaluating climate change and it has many working groups focused on different aspects of climate change. 
                     Here is the graph by [Working Group III](https://www.ipcc.ch/working-group/wg3/), that illustrates the paths emissions should take to limit global warming to different levels. 
                     The ultimate goal is to limit global warming to 1.5°C, but according to IPCC this is unlikely with the current policies.
-                """),
+                """, style={"width": "100%", "display": "flex", 'textAlign': 'left','margin': "2%", "justify-content":"center"}),
             ],
         ),
-        
  
         dbc.Row(
             [
@@ -73,7 +75,6 @@ layout = html.Div(
                     "Resources for the Future: Carbon pricing calculator",
                     style={"text-align": "center"},
                 ),
-                dbc.Label("RFF Carbon Pricing Calculator"),
                 dbc.RadioItems(
                     options=[
                         {
@@ -84,7 +85,8 @@ layout = html.Div(
                             "label": "Cumulative Emissions",
                             "value": "RFF_Cumulative_EmissionsL.csv",
                         },
-                        {"label": "Carbon Price", "value": "RFF_Carbon_Price.csv"},
+                        {"label": "Carbon Price", 
+                        "value": "RFF_Carbon_Price.csv"},
                         {
                             "label": "Annual Revenues",
                             "value": "RFF_Annual_RevenuesL.csv",
@@ -92,6 +94,7 @@ layout = html.Div(
                     ],
                     value="RFF_Annual_EmissionsL.csv",
                     id="RFF_calc_file",
+                    style={"margin":"2%"}
                 ),
                 dcc.Graph(id="RFF_calc"),
                 dcc.Markdown("""
@@ -100,7 +103,7 @@ layout = html.Div(
                     Their Carbon Pricing Calculator is a great way to illustrate how different policies can have an impact on the environment. 
                     Although it is focused on the United States, it considers policy actions that are reproducible in the Nordics too. 
                     These include flat and incremental carbon taxes, with revenue recycling. You can learn more from their website [here](https://www.rff.org/publications/data-tools/carbon-pricing-calculator/).
-                """),
+                """, style={"width": "100%", "display": "flex", 'textAlign': 'left','margin': "2%", "justify-content":"center"}),
 
             ]
         ),
