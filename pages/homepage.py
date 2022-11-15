@@ -3,6 +3,7 @@ import random
 import dash
 from dash import Input, Output, callback, ctx, dcc, html
 
+
 ##num = random.randint(1, 5)
 num = 2
 if num == 1:

@@ -1,31 +1,44 @@
 import dash
 from dash import Input, Output, callback, ctx, dcc, html
+import dash_bootstrap_components as dbc
 
 dash.register_page(__name__, path="/question2")
 layout = html.Div(
     [
+        dbc.NavbarSimple(
+                    children=[
+                        dbc.NavItem(dbc.NavLink("Questionnaire", href="#")),
+                        dbc.NavItem(dbc.NavLink("Home", href="graphs")),
+                        dbc.NavItem(dbc.NavLink("Future", href="whatif")),
+                        dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                    ],
+                    brand="Home",
+                    brand_href="graphs",
+                    color="primary",
+                    dark=True,
+                ),
         html.Div(
             [
                 html.H1(
-                    "How many people in the world live in areas that are 5 meters or less above sea level?",
+                    "Which of the following is a widely used policy to reduce global carbon emissions?",
                     className="question",
                 ),
                 html.Div(
                     [
                         html.Button(
-                            "Around 11%",
+                            "Mix and match",
                             className="stuff",
                             id="ques2_first_button",
                             style={"margin": "6px"},
                         ),
                         html.Button(
-                            "Around 31%",
+                            "Catch and tax",
                             className="stuff",
                             id="ques2_second_button",
                             style={"margin": "6px"},
                         ),
                         html.Button(
-                            "Around 51%",
+                            "Cap and trade",
                             className="stuff",
                             id="ques2_third_button",
                             style={"margin": "6px"},
@@ -52,15 +65,16 @@ def update_log(b1, b2, b3):
     if triggered_id == "ques2_first_button" or triggered_id == "ques2_second_button":
         return html.Div(
             [
-                html.H1(" Far to the beach ", className="solution"),
+                html.H1("Not quite right", className="solution"),
                 html.H2(
-                    "Most people overestimate the population at risk from rising sea levels. When you overestimate how many homes can be reached by rising sea levels, you may think it’s impossible for so many people to find new places to live.",
+                    "The first two certainly sound catchy, but neither is correct. Cap and trade is used to set maximum amount of emissions and permits are distributed for companies to trade or use",
                     className="fact",
                 ),
                 dcc.Link(
                     "Next question",
                     href="/question3",
                     className="stuff next_button",
+                    style= {"width": "25%", "justify-content":"center"},
                 ),
             ]
         )
@@ -69,13 +83,14 @@ def update_log(b1, b2, b3):
             [
                 html.H1("You are right", className="solution"),
                 html.H2(
-                    "But 77% of people answer wrongly. Most people overestimate the population at risk from rising sea levels. When they overestimate how many homes can be reached by rising sea levels, they may think it’s impossible for so many people to find new places to live.",
+                    "The first two certainly sound catchy, but neither is correct. Cap and trade is used to set maximum amount of emissions and permits are distributed for companies to trade or use",
                     className="fact",
                 ),
                 dcc.Link(
                     "Next question",
                     href="/question3",
                     className="stuff next_button",
+                    style= {"width": "25%", "justify-content":"center"},
                 ),
             ]
         )

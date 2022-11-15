@@ -1,32 +1,45 @@
 import dash
 from dash import Input, Output, callback, ctx, dcc, html
+import dash_bootstrap_components as dbc
 
 dash.register_page(__name__, path="/")
 layout = html.Div(
     [
+        dbc.NavbarSimple(
+                    children=[
+                        dbc.NavItem(dbc.NavLink("Questionnaire", href="#")),
+                        dbc.NavItem(dbc.NavLink("Home", href="graphs")),
+                        dbc.NavItem(dbc.NavLink("Future", href="whatif")),
+                        dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                    ],
+                    brand="Home",
+                    brand_href="graphs",
+                    color="primary",
+                    dark=True,
+                ),
         html.Div([]),
         html.Div(
             [
                 html.H1(
-                    "How much of the excess heat from global warming is captured in the oceans?",
+                    "What is the United Nations body for assessing the science related to climate change?",
                     className="question",
                 ),
                 html.Div(
                     [
                         html.Button(
-                            "Around 10%",
+                            "IPPD",
                             className="stuff",
                             id="first_button",
                             style={"margin": "6px"},
                         ),
                         html.Button(
-                            "Around 50%",
+                            "Y.M.C.A.",
                             className="stuff",
                             id="second_button",
                             style={"margin": "6px"},
                         ),
                         html.Button(
-                            "Around 90%",
+                            "IPCC",
                             className="stuff",
                             id="third_button",
                             style={"margin": "6px"},
@@ -54,13 +67,14 @@ def update_log(b1, b2, b3):
         return html.Div(
             [
                 html.H1(
-                    "Don’t look for global warming outside your window",
+                    "IPPD is used to make the rubber in tires and Y.M.C.A. is a song by American disco group Village People",
                     className="solution",
                 ),
                 dcc.Link(
-                    "To Knowledge",
+                    "Next question",
                     href="/question2",
                     className="stuff next_button",
+                    style= {"width": "25%", "justify-content":"center"},
                 ),
             ]
         )
@@ -69,13 +83,15 @@ def update_log(b1, b2, b3):
             [
                 html.H1("You are right", className="solution"),
                 html.P(
-                    "But 90%% of people answer wrongly. Most people are unaware that most global warming is hiding in the seas. As long as they think global warming is all about air temperature, they won’t realize the size of the problem.",
+                    "The Intergovernmental Panel on Climate Change (IPCC) is the United Nations body for assessing the science related to climate change.",
                     className="fact",
                 ),
                 dcc.Link(
                     "Next question",
                     href="/question2",
                     className="stuff next_button",
+                    style={"width": "25%", "justify-content":"center"},
                 ),
             ]
+            
         )

@@ -119,9 +119,9 @@ layout = html.Div(
                 dcc.Markdown("""
                     Resources for the Future describes themselves as an independent, non-profit research institution situated in Washington, DC. 
                     Their goal is to improve the decision-making process around environmental policy, via research and policy action. 
-                    Their Carbon Pricing Calculator is a great way to illustrate how different policies can have an impact on the environment. 
+                    [Their Carbon Pricing Calculator](https://www.rff.org/publications/data-tools/carbon-pricing-calculator/) is a great way to illustrate how different policies can have an impact on the environment. 
                     Although it is focused on the United States, it considers policy actions that are reproducible in the Nordics too. 
-                    These include flat and incremental carbon taxes, with revenue recycling. You can learn more from their website [here](https://www.rff.org/publications/data-tools/carbon-pricing-calculator/).
+                    These include flat and incremental carbon taxes, with revenue recycling. You can learn more from their website [here](https://www.rff.org/).
                 """, style={"width": "100%", "display": "flex", 'textAlign': 'left','margin': "2%", "justify-content":"center"}),
 
             ]

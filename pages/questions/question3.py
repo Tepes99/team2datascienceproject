@@ -1,9 +1,22 @@
 import dash
 from dash import Input, Output, callback, ctx, dcc, html
+import dash_bootstrap_components as dbc
 
 dash.register_page(__name__, path="/question3")
 layout = html.Div(
     [
+        dbc.NavbarSimple(
+                    children=[
+                        dbc.NavItem(dbc.NavLink("Questionnaire", href="#")),
+                        dbc.NavItem(dbc.NavLink("Home", href="graphs")),
+                        dbc.NavItem(dbc.NavLink("Future", href="whatif")),
+                        dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                    ],
+                    brand="Home",
+                    brand_href="graphs",
+                    color="primary",
+                    dark=True,
+                ),
         html.Div(
             [
                 html.H1(
@@ -64,6 +77,7 @@ def update_log(b1, b2, b3, b4):
                     "Next question",
                     href="/question4",
                     className="stuff next_button",
+                    style= {"width": "25%", "justify-content":"center"},
                 ),
             ]
         )
@@ -75,6 +89,7 @@ def update_log(b1, b2, b3, b4):
                     "Next question",
                     href="/question4",
                     className="stuff next_button",
+                    style= {"width": "25%", "justify-content":"center"},
                 ),
             ]
         )
