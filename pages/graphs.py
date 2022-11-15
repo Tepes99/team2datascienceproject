@@ -665,7 +665,7 @@ def update_graph_co2_by_region(
         range_color=[0, 20],
         color_continuous_scale=px.colors.sequential.Aggrnyl,
         hover_data={"Country": False},
-        labels={str(year_slctd): "CO2 emission/capita"},
+        labels={str(year_slctd): ",    CO2 emission/capita"},
         hover_name="Country",
         basemap_visible=True,
         # center = center_dict[region_slctd]
@@ -677,7 +677,7 @@ def update_graph_co2_by_region(
         margin=dict(l=0, r=0, b=0, t=0, pad=4, autoexpand=True),
         #     height=400,
     )
-    #fig.update_coloraxes(colorbar_orientation="h", colorbar_y=1)
+    fig.update_coloraxes(colorbar_orientation="h", colorbar_y=1)
     return container, fig
 
 

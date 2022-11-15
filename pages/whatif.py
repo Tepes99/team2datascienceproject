@@ -53,7 +53,7 @@ layout = html.Div(
                     "Global GHG emissions by scenario", style={"margin-top":"5%","text-align": "center"}
                 ),
                 dbc.Label("Choose between total emissions, per capita and per GDP",
-                style={"width": "100%", "display": "flex", 'textAlign': 'left','margin': "2%"}
+                style={'margin': "2%"}
                 ),
                 dbc.RadioItems(
                     options=[
@@ -131,9 +131,14 @@ layout = html.Div(
                             [
                                 "Decrease car usage by x%",
                             ],
+                            [
+                                "Decrease car usage by x%",
+                            ],
                             id="car_check",
+
+                            
                         ),
-                        dcc.Input(type="hidden", id="car_usage", min=0, max=100),
+                        dcc.Input(id="car_usage", min=0, max=100, value=5),
                         dcc.Checklist(
                             [
                                 "Cutting down the usage of lights by x%",
@@ -166,6 +171,8 @@ layout = html.Div(
                             ],
                             style={"margin": "6px"},
                             id="reduce_scope",
+                            value= "Just you",
+                            
                         ),
                         html.Div(
                             [
@@ -411,6 +418,7 @@ def display_projeciton(proj):
             t=110,
         ),
         showlegend=True,
+        legend_orientation = "h",
         plot_bgcolor="white",
     )
 
@@ -451,6 +459,9 @@ def display_area(calc_file):
             t=110,
         ),
         showlegend=True,
+        legend_orientation = "h",
+        legend_borderwidth = 0,
+        legend_y = -0.2,
         plot_bgcolor="white",
     )
     return fig
