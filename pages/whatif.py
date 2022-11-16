@@ -225,6 +225,7 @@ layout = html.Div(
         ),
         dbc.Row(
             [
+                html.H1('Global CO2 emissions 5 year forecast', style = {'text-align':'center'}),
                 dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%'}),
             ],
         ),
