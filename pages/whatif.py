@@ -226,7 +226,7 @@ layout = html.Div(
         dbc.Row(
             [
                 html.H1('Global CO2 emissions 5 year forecast', style = {'text-align':'center'}),
-                dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%'}),
+                dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%',"height": "45vh"}),
             ],
         ),
         dbc.Row(
@@ -259,7 +259,7 @@ layout = html.Div(
                         ),
                         dcc.Input(type="hidden", id="shower_usage", min=0, max=100),
                     ],
-                    width={"offset": 3},
+                    style={"margin":"2%" },
                 ),
                 dbc.Col(
                     [
@@ -275,7 +275,7 @@ layout = html.Div(
                                 "South America",
                                 "World",
                             ],
-                            style={"margin": "6px"},
+                            style={"margin": "6px","margin-top": "20px"},
                             id="reduce_scope",
                             value="Just you",
                         ),
@@ -294,8 +294,7 @@ layout = html.Div(
         ),
         dbc.Row(
             dbc.Col(
-                [html.Div(id="my-output", style={"font-size": "300%", "color": "red"})],
-                width={"offset": 3},
+                [html.Div(id="my-output")],
             )
         ),
         dbc.NavbarSimple(
@@ -435,12 +434,13 @@ def compute_reduced_carbon(c1, c2, c3, u1, u2, u3, scope, percent):
             reduce1 = 4.6 * 1e3 * percent / 100 * world_population
             reduce2 = 2529 / 1000 * percent / 100 * world_population
             reduce3 = 2.6 / 1000 * percent / 100 * world_population
-    if scope != None:
-        return [
-            "We can reduce {:,.0f} tonnes of carbon dioxide per year".format(
+    message = "We can reduce {:,.0f} tonnes of carbon dioxide per year".format(
                 reduce1 * ans1 + reduce2 * ans2 + reduce3 * ans3
             )
-        ]
+    if scope != None:
+        return dcc.Markdown(""" 
+        ## {}
+        """.format(message),style = {"margin":"2%", "margin-bottom":"5vh"})
     else:
         return []
 
