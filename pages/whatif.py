@@ -120,7 +120,7 @@ layout = html.Div(
             [
                 dbc.NavbarSimple(
                     children=[
-                        dbc.NavItem(dbc.NavLink("Questionnaire", href="/..")),
+                        dbc.NavItem(dbc.NavLink("Quizz", href="/..")),
                         dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                         dbc.NavItem(dbc.NavLink("Future", href="#")),
                         dbc.NavItem(
@@ -263,7 +263,7 @@ layout = html.Div(
         ),
         dbc.NavbarSimple(
             children=[
-                dbc.NavItem(dbc.NavLink("Questionnaire", href="/..")),
+                dbc.NavItem(dbc.NavLink("Quizz", href="/..")),
                 dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                 dbc.NavItem(dbc.NavLink("Future", href="#")),
                 dbc.NavItem(

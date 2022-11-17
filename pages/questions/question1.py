@@ -7,7 +7,7 @@ layout = html.Div(
     [
         dbc.NavbarSimple(
                     children=[
-                        dbc.NavItem(dbc.NavLink("Questionnaire", href="#")),
+                        dbc.NavItem(dbc.NavLink("Quizz", href="#")),
                         dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                         dbc.NavItem(dbc.NavLink("Future", href="whatif")),
                         dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
@@ -51,7 +51,7 @@ layout = html.Div(
             id="hook_question",
         ),
         dcc.Markdown(""" 
-        ### Questionnaire inspired by [GapMinder's climate action questionnaire](https://upgrader.gapminder.org/t/sdg-world-13/)
+        ### Quizz inspired by [GapMinder's climate action quizz](https://upgrader.gapminder.org/t/sdg-world-13/)
         """, style={"margin-top":"5%", 'textAlign': 'center',}
         ),
     ]
@@ -70,9 +70,10 @@ def update_log(b1, b2, b3):
     if triggered_id == "first_button" or triggered_id == "second_button":
         return html.Div(
             [
-                html.H1(
+                html.H1("You are wrong", className="solution"),
+                html.H2(
                     "IPPD is used to make the rubber in tires and Y.M.C.A. is a song by American disco group Village People",
-                    className="solution",
+                    className="fact",
                 ),
                 dcc.Link(
                     "Next question",
@@ -86,7 +87,7 @@ def update_log(b1, b2, b3):
         return html.Div(
             [
                 html.H1("You are right", className="solution"),
-                html.P(
+                html.H2(
                     "The Intergovernmental Panel on Climate Change (IPCC) is the United Nations body for assessing the science related to climate change.",
                     className="fact",
                 ),
