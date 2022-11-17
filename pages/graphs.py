@@ -484,7 +484,7 @@ layout = html.Div(
                             [Their Carbon Pricing Calculator](https://www.rff.org/publications/data-tools/carbon-pricing-calculator/) is a great way to illustrate how different policies can have an impact on the environment. 
                                                        
                             The RFF utilizes the Goulder-Hafstead Energy-Environment-Economy E3 CGE Model, an economy-wide model of the United States with international trade to evaluate the impact of the policies. 
-                            Its focus is on tax system and its interaction with pre existing environmental and economic policies.
+                            Its focus is on tax system and its interaction with pre-existing environmental and economic policies.
                             As of 17.11.2022 all of the Acts are at the "Introduced" stage, and need to pass the Senate, the House and the President to become law.
                             Follow legislation process on [congress.gov](https://www.congress.gov/search?q=%7B%22source%22%3A%22legislation%22%7D).
                                                  
