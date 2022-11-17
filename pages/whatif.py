@@ -139,16 +139,21 @@ layout = html.Div(
                     "Global GHG emissions by scenario",
                     style={"margin-top": "5%", "text-align": "center"},
                 ),
+                dcc.Markdown("""
+                    Similar to our projection, IPCC expects Global GHG emissions in 2030 associated with the implementation of Nationally Determined 
+                    Contributions (NDCs) announced before 26th UN Climate Change Conference to result global warming to exceed 1.5°C """
+                ,style={"margin": "2%"}
+                ),
                 dbc.RadioItems(
                     options=[
                         {"label": "Trend from implemented policies", "value": "7"},
                         {
-                            "label": "Limit warming to 2°C (>67%) or return warming to 1.5°C (>50%) after a high overshoot, NDCs until 2030",
+                            "label": "Limit warming to 2°C (>67%) or return warming to 1.5°C (>50%) after a high overshoot in temperature, NDCs until 2030",
                             "value": "4",
                         },
                         {"label": "Limit warming to 2°C (>67%)", "value": "2"},
                         {
-                            "label": "Limit warming to 1.5°C (>50%) with no or limited overshoot",
+                            "label": "Limit warming to 1.5°C (>50%) with no or limited overshoot in temperature",
                             "value": "1",
                         },
                     ],
@@ -156,6 +161,7 @@ layout = html.Div(
                     id="projectionVal",
                     style={"margin": "2%"},
                 ),
+                
                 dcc.Graph(id="projection", style={"height": "45vh"}),
                 dcc.Markdown(
                     """
@@ -506,6 +512,8 @@ def display_projeciton(proj):
     )
 
     fig.update_layout(
+        xaxis_title="Year",
+        yaxis_title="Billion metric tons",
         xaxis=dict(
             showline=True,
             showgrid=False,
@@ -544,11 +552,21 @@ def display_projeciton(proj):
 @callback(Output("RFF_calc", "figure"), Input("RFF_calc_file", "value"))
 def display_area(calc_file):
     df = pd.read_csv(f"{dataPath}/{calc_file}")
+    omitted_policies = [
+            "America Wins Act (Larson)",
+            "American Opportunity Carbon Fee Act (Whitehouse-Schatz)",
+            "Consumers REBATE Act (McNerney)",
+            "Healthy Climate and Family Security Act (Van Hollen-Beyer)",
+            "MARKET CHOICE Act (Fitzpatrick)",
+            "Raise Wages Cut Carbon Act (Lipinski)"
+            ]
     if calc_file == "RFF_Consumer_Prices.csv":
         fig = go.Figure()
+        df = df.drop(columns = omitted_policies)
         for colName in df.columns[1:]:
             fig.add_trace(go.Bar(y=df[colName], x=df["Category"], name=colName))
     else:
+        df = df[~df["Policy"].isin(omitted_policies)]
         fig = px.line(df, x=df["Year"], y=df.columns[2], color=df["Policy"])
     fig.update_layout(
         xaxis=dict(
@@ -580,7 +598,7 @@ def display_area(calc_file):
         showlegend=True,
         legend_orientation="h",
         legend_borderwidth=0,
-        legend_y=-0.2,
+        #legend_y=-1,
         plot_bgcolor="white",
     )
     return fig
