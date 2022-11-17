@@ -135,9 +135,20 @@ layout = html.Div(
                     color="primary",
                     dark=True,
                 ),
+                dbc.Row(
+            [
+                html.H1('Global CO2 emissions 5 year forecast', style = {"margin-top": "5%",'text-align':'center'}),
+                dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%',"height": "45vh"}),
+                dcc.Markdown("""
+                    Daniel write the explanation for forecast here and change the Mt to Gt
+                    """
+                ,style={"margin": "2%"}
+                ),
+            ],
+        ),
                 html.H1(
                     "Global GHG emissions by scenario",
-                    style={"margin-top": "5%", "text-align": "center"},
+                    style={ "text-align": "center"},
                 ),
                 dcc.Markdown("""
                     Similar to our projection, IPCC expects Global GHG emissions in 2030 associated with the implementation of Nationally Determined 
@@ -180,61 +191,8 @@ layout = html.Div(
                 ),
             ],
         ),
-        dbc.Row(
-            [
-                html.H1(
-                    "Resources for the Future: Carbon pricing calculator",
-                    style={"text-align": "center"},
-                ),
-                dbc.RadioItems(
-                    options=[
-                        {
-                            "label": "Annual Emissions",
-                            "value": "RFF_Annual_EmissionsL.csv",
-                        },
-                        {
-                            "label": "Cumulative Emissions",
-                            "value": "RFF_Cumulative_EmissionsL.csv",
-                        },
-                        {"label": "Carbon Price", "value": "RFF_Carbon_Price.csv"},
-                        {
-                            "label": "Annual Revenues",
-                            "value": "RFF_Annual_RevenuesL.csv",
-                        },
-                        {
-                            "label": "Consumer Prices % Change in 2030 Compared to Business as Usual",
-                            "value": "RFF_Consumer_Prices.csv",
-                        },
-                    ],
-                    value="RFF_Annual_EmissionsL.csv",
-                    id="RFF_calc_file",
-                    style={"margin": "2%"},
-                ),
-                dcc.Graph(id="RFF_calc", style={"height": "45vh"}),
-                dcc.Markdown(
-                    """
-                    Resources for the Future describes themselves as an independent, non-profit research institution situated in Washington, DC. 
-                    Their goal is to improve the decision-making process around environmental policy, via research and policy action. 
-                    [Their Carbon Pricing Calculator](https://www.rff.org/publications/data-tools/carbon-pricing-calculator/) is a great way to illustrate how different policies can have an impact on the environment. 
-                    Although it is focused on the United States, it considers policy actions that are reproducible in the Nordics too. 
-                    These include flat and incremental carbon taxes, with revenue recycling. You can learn more from their website [here](https://www.rff.org/).
-                """,
-                    style={
-                        "width": "100%",
-                        "display": "flex",
-                        "textAlign": "left",
-                        "margin": "2%",
-                        "justify-content": "center",
-                    },
-                ),
-            ]
-        ),
-        dbc.Row(
-            [
-                html.H1('Global CO2 emissions 5 year forecast', style = {'text-align':'center'}),
-                dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%',"height": "45vh"}),
-            ],
-        ),
+        
+        
         dbc.Row(
             [
                 dbc.Col(
@@ -546,59 +504,4 @@ def display_projeciton(proj):
     )
 
     fig.update_traces(mode="lines")
-    return fig
-
-
-@callback(Output("RFF_calc", "figure"), Input("RFF_calc_file", "value"))
-def display_area(calc_file):
-    df = pd.read_csv(f"{dataPath}/{calc_file}")
-    omitted_policies = [
-            "America Wins Act (Larson)",
-            "American Opportunity Carbon Fee Act (Whitehouse-Schatz)",
-            "Consumers REBATE Act (McNerney)",
-            "Healthy Climate and Family Security Act (Van Hollen-Beyer)",
-            "MARKET CHOICE Act (Fitzpatrick)",
-            "Raise Wages Cut Carbon Act (Lipinski)"
-            ]
-    if calc_file == "RFF_Consumer_Prices.csv":
-        fig = go.Figure()
-        df = df.drop(columns = omitted_policies)
-        for colName in df.columns[1:]:
-            fig.add_trace(go.Bar(y=df[colName], x=df["Category"], name=colName))
-    else:
-        df = df[~df["Policy"].isin(omitted_policies)]
-        fig = px.line(df, x=df["Year"], y=df.columns[2], color=df["Policy"])
-    fig.update_layout(
-        xaxis=dict(
-            showline=True,
-            showgrid=False,
-            showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
-            linewidth=2,
-            ticks="outside",
-            tickfont=dict(
-                family="Arial",
-                size=12,
-                color="rgb(82, 82, 82)",
-            ),
-        ),
-        yaxis=dict(
-            showgrid=False,
-            zeroline=False,
-            showline=False,
-            showticklabels=True,
-        ),
-        autosize=True,
-        margin=dict(
-            autoexpand=True,
-            l=100,
-            r=20,
-            t=110,
-        ),
-        showlegend=True,
-        legend_orientation="h",
-        legend_borderwidth=0,
-        #legend_y=-1,
-        plot_bgcolor="white",
-    )
     return fig
