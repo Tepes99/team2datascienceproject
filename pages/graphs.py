@@ -271,7 +271,7 @@ layout = html.Div(
                             style={"width": "50%", "margin-left": "50px"},
                         ),
                         html.Br(),
-                        dcc.Graph(id="sector_emissions_graph", style={'marggin':"2%","height":"45vh"}),
+                        dcc.Graph(id="sector_emissions_graph", style={'marggin':"2%"}),
 
 
                         dcc.Markdown('''
@@ -307,7 +307,7 @@ layout = html.Div(
                         ),
                         html.Br(),
                         dcc.Graph(
-                            id="co2_graph", figure={}, style={"margin": "2%","height":"50vh"}
+                            id="co2_graph", figure={}, style={"margin": "2%"}
                         ),
                         html.Br(),
                         html.Div(
@@ -476,7 +476,7 @@ layout = html.Div(
                             id="RFF_calc_file",
                             style={"margin": "0%"},
                         ),
-                        dcc.Graph(id="RFF_calc", style={"height": "45vh"}),
+                        dcc.Graph(id="RFF_calc"),
                         dcc.Markdown(
                             """
                             Resources for the Future (RFF) describes themselves as an independent, non-profit research institution situated in Washington, DC. 
@@ -537,7 +537,7 @@ layout = html.Div(
                             options=list(teemusData.columns.values),
                             value="Afghanistan",
                         ),
-                        dcc.Graph(id="teemusGraph", style={"height":"45vh"}),
+                        dcc.Graph(id="teemusGraph"),
                         dcc.Markdown('''
                             European Comission has a great database called [EDGAR - Emissions Database for Global Atmospheric Research.](https://edgar.jrc.ec.europa.eu/emissions_data_and_maps)
                             It allows us to see how the fight against climate change is developing in different regions.

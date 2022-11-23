@@ -138,7 +138,7 @@ layout = html.Div(
                 dbc.Row(
             [
                 html.H1('Global CO2 emissions 5 year forecast', style = {"margin-top": "5%",'text-align':'center'}),
-                dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%',"height": "45vh"}),
+                dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%'}),
                 dcc.Markdown("""
                     Daniel write the explanation for forecast here and change the Mt to Gt
                     """
@@ -173,7 +173,7 @@ layout = html.Div(
                     style={"margin": "2%"},
                 ),
                 
-                dcc.Graph(id="projection", style={"height": "45vh"}),
+                dcc.Graph(id="projection"),
                 dcc.Markdown(
                     """
                     The United Nations has many sub-organizations, and one of them is [The Intergovernmental Panel on Climate Change (IPCC)](https://www.ipcc.ch/). 
