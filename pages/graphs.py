@@ -850,6 +850,7 @@ def display_area(sheet, y):
     fig = px.area(df, x=df.index, y=y)
 
     fig.update_layout(
+        xaxis_title="Year",
         xaxis=dict(
             showline=True,
             showgrid=False,

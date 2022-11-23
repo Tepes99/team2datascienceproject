@@ -152,7 +152,7 @@ layout = html.Div(
                         dcc.Graph(
                             id="emissions_forecast",
                             figure=prediction_plot,
-                            style={"margin-left": "2%", "height": "45vh"},
+                            style={"margin-left": "2%"},
                         ),
                         dcc.Markdown(
                             """
@@ -189,7 +189,7 @@ layout = html.Div(
                     id="projectionVal",
                     style={"margin": "2%"},
                 ),
-                dcc.Graph(id="projection", style={"height": "45vh"}),
+                dcc.Graph(id="projection"),
                 dcc.Markdown(
                     """
                     The United Nations has many sub-organizations, and one of them is [The Intergovernmental Panel on Climate Change (IPCC)](https://www.ipcc.ch/). 
