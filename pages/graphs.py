@@ -225,7 +225,7 @@ layout = html.Div(
             [   
                 dbc.NavbarSimple(
                             children=[
-                                dbc.NavItem(dbc.NavLink("Quizz", href="/..")),
+                                dbc.NavItem(dbc.NavLink("Quiz", href="/..")),
                                 dbc.NavItem(dbc.NavLink("Home", href="#")),
                                 dbc.NavItem(dbc.NavLink("Future", href="whatif")),
                                 dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
@@ -552,7 +552,7 @@ layout = html.Div(
                         """,style={"height":"5vh"}),
                         dbc.NavbarSimple(
                             children=[
-                                dbc.NavItem(dbc.NavLink("Quizz", href="/..")),
+                                dbc.NavItem(dbc.NavLink("Quiz", href="/..")),
                                 dbc.NavItem(dbc.NavLink("Home", href="#")),
                                 dbc.NavItem(dbc.NavLink("Future", href="whatif")),
                                 dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
@@ -931,7 +931,7 @@ def display_area(calc_file):
         showlegend=True,
         legend_orientation="h",
         legend_borderwidth=0,
-        legend_y=-0.2,
+        legend_y=-0.5,
         plot_bgcolor="white",
     )
     return fig

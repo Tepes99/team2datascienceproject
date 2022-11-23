@@ -8,7 +8,7 @@ layout = html.Div(
     [
         dbc.NavbarSimple(
                     children=[
-                        dbc.NavItem(dbc.NavLink("Quizz", href="#")),
+                        dbc.NavItem(dbc.NavLink("Quiz", href="#")),
                         dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                         dbc.NavItem(dbc.NavLink("Future", href="whatif")),
                         dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),

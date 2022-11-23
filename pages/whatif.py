@@ -128,7 +128,7 @@ layout = html.Div(
             [
                 dbc.NavbarSimple(
                     children=[
-                        dbc.NavItem(dbc.NavLink("Quizz", href="/..")),
+                        dbc.NavItem(dbc.NavLink("Quiz", href="/..")),
                         dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                         dbc.NavItem(dbc.NavLink("Future", href="#")),
                         dbc.NavItem(
@@ -272,9 +272,19 @@ layout = html.Div(
                 [html.Div(id="my-output")],
             )
         ),
+        dcc.Markdown("""
+        Following sources were used for calculations:
+
+        [Countries by number of households](https://en.wikipedia.org/wiki/List_of_countries_by_number_of_households)
+
+        [Home electricity consumption](https://www.vaasansahko.fi/en/energy-tips/electricity-consumption-at-your-home-what-does-it-consist-of/)
+
+        [Average daily driving time](https://newsroom.aaa.com/2016/09/americans-spend-average-17600-minutes-driving-year/)
+        """, style={"margin":"2%"}),
+        
         dbc.NavbarSimple(
             children=[
-                dbc.NavItem(dbc.NavLink("Quizz", href="/..")),
+                dbc.NavItem(dbc.NavLink("Quiz", href="/..")),
                 dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                 dbc.NavItem(dbc.NavLink("Future", href="#")),
                 dbc.NavItem(
