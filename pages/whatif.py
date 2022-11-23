@@ -57,6 +57,7 @@ co2_data.loc[2025] = [None]
 co2_data.loc[2026] = [None]
 
 shitos = pd.concat([co2_data, pred_df], axis=1)
+shitos = shitos.drop([year for year in range(1970, 1990)])
 
 #print(shitos)
 
