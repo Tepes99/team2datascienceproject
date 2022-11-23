@@ -6,8 +6,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pycountry
 import pycountry_convert as pc
-from statsmodels.tsa.arima.model import ARIMA
 from dash import Input, Output, callback, dcc, html
+from statsmodels.tsa.arima.model import ARIMA
 
 pd.options.mode.chained_assignment = None  # default='warn'
 import os
@@ -24,19 +24,24 @@ mainDirectory = os.path.dirname(os.path.abspath(__file__))
 dataPath = f"{mainDirectory[0:-5]}/data/"
 dash.register_page(__name__, path="/whatif")
 
-#Daniels prediction
-co2_data = pd.read_excel(io=f"{dataPath}/EDGARv7.0_FT2021_fossil_CO2_booklet_2022.xlsx", sheet_name="fossil_CO2_totals_by_country")
+# Daniels prediction
+co2_data = pd.read_excel(
+    io=f"{dataPath}/EDGARv7.0_FT2021_fossil_CO2_booklet_2022.xlsx",
+    sheet_name="fossil_CO2_totals_by_country",
+)
 co2_data = co2_data[co2_data["Country"] == "GLOBAL TOTAL"]
 co2_data.drop(columns=["Country", "EDGAR Country Code", "Substance"], inplace=True)
 co2_data.reset_index(drop=True, inplace=True)
 co2_data["id"] = 0
 
-co2_data = pd.melt(co2_data, id_vars="id", var_name="Year", value_name="Realized CO2 [Mt/year]")
+co2_data = pd.melt(
+    co2_data, id_vars="id", var_name="Year", value_name="Realized CO2 [Mt/year]"
+)
 co2_data.drop(columns=["id"], inplace=True)
 co2_data.set_index("Year", inplace=True)
 
 # super simple once-differenced AR model (with drift i.e., constant term c)
-model = ARIMA(co2_data, order=(1,1,0), trend="t")
+model = ARIMA(co2_data, order=(1, 1, 0), trend="t")
 result = model.fit()
 # predict 5 years out
 mat_pred = result.get_prediction(start=1, end=56)
@@ -47,7 +52,7 @@ pred_df.columns = ["Predicted CO2 [Mt/year]", "Lower CI (95%)", "Higher CI (95%)
 pred_df.loc[-1] = [None, None, None]
 pred_df.index = pred_df.index + 1
 pred_df = pred_df.sort_index()
-pred_df["Year"] = [year for year in range(1970,2027)]
+pred_df["Year"] = [year for year in range(1970, 2027)]
 pred_df.set_index("Year", inplace=True)
 # hardcode future years into og timeseries
 co2_data.loc[2022] = [None]
@@ -57,52 +62,55 @@ co2_data.loc[2025] = [None]
 co2_data.loc[2026] = [None]
 
 shitos = pd.concat([co2_data, pred_df], axis=1)
+shitos = shitos.drop([year for year in range(1970, 1990)])
 
-#print(shitos)
+# print(shitos)
 
-prediction_plot = go.Figure([
-    go.Scatter(
-        name="Predicted",
-        x=shitos.index,
-        y=shitos["Predicted CO2 [Mt/year]"],
-        mode="lines",
-        line=dict(color="rgb(31,119,180)")
-    ),
-    go.Scatter(
-        name="Upper CI",
-        x=shitos.index,
-        y=shitos["Higher CI (95%)"],
-        mode="lines",
-        marker=dict(color="#444"),
-        line=dict(width=0)
-    ),
-    go.Scatter(
-        name="Lower CI",
-        x=shitos.index,
-        y=shitos["Lower CI (95%)"],
-        mode="lines",
-        marker=dict(color="#444"),
-        line=dict(width=0,),
-        fillcolor="rgba(68,68,68,0.3)",
-        fill="tonexty"
-    ),
-    go.Scatter(
-        name="Realized",
-        x=shitos.index,
-        y=shitos["Realized CO2 [Mt/year]"],
-        mode="lines",
-        line=dict(color="rgb(250,150,20)")
-    )
-])
+prediction_plot = go.Figure(
+    [
+        go.Scatter(
+            name="Predicted",
+            x=shitos.index,
+            y=shitos["Predicted CO2 [Mt/year]"],
+            mode="lines",
+            line=dict(color="rgb(31,119,180)"),
+        ),
+        go.Scatter(
+            name="Upper CI",
+            x=shitos.index,
+            y=shitos["Higher CI (95%)"],
+            mode="lines",
+            marker=dict(color="#444"),
+            line=dict(width=0),
+        ),
+        go.Scatter(
+            name="Lower CI",
+            x=shitos.index,
+            y=shitos["Lower CI (95%)"],
+            mode="lines",
+            marker=dict(color="#444"),
+            line=dict(
+                width=0,
+            ),
+            fillcolor="rgba(68,68,68,0.3)",
+            fill="tonexty",
+        ),
+        go.Scatter(
+            name="Realized",
+            x=shitos.index,
+            y=shitos["Realized CO2 [Mt/year]"],
+            mode="lines",
+            line=dict(color="rgb(250,150,20)"),
+        ),
+    ]
+)
 
 prediction_plot.update_layout(
     xaxis_title="Year",
     yaxis_title="CO2 emissions [Mt CO2/year]",
     hovermode="x",
-    template="none"
+    template="none",
 )
-
-
 
 
 teemusData = pd.read_excel(
@@ -136,24 +144,33 @@ layout = html.Div(
                     dark=True,
                 ),
                 dbc.Row(
-            [
-                html.H1('Global CO2 emissions 5 year forecast', style = {"margin-top": "5%",'text-align':'center'}),
-                dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%'}),
-                dcc.Markdown("""
-                    Daniel write the explanation for forecast here and change the Mt to Gt
-                    """
-                ,style={"margin": "2%"}
+                    [
+                        html.H1(
+                            "Global CO2 emissions 5 year forecast",
+                            style={"margin-top": "5%", "text-align": "center"},
+                        ),
+                        dcc.Graph(
+                            id="emissions_forecast",
+                            figure=prediction_plot,
+                            style={"margin-left": "2%", "height": "45vh"},
+                        ),
+                        dcc.Markdown(
+                            """
+                    The above graph provides a simple ARIMA(1,1,0) predictive model for global CO2 emissions timeseries. The grey area inidcates a confidence interval of 95%. As typical for a simple ARIMA forecast, the future predicted values quickly regress to the mean. The graph still provides some insight to how we can expect the trend to develop if emission remain as they have been in the past without much changes. Both the models predicted values for previous timepoints and the 5 year forecast are given to demonstrate the decent behaviour of the fitted model.
+                    """,
+                            style={"margin": "2%"},
+                        ),
+                    ],
                 ),
-            ],
-        ),
                 html.H1(
                     "Global GHG emissions by scenario",
-                    style={ "text-align": "center"},
+                    style={"text-align": "center"},
                 ),
-                dcc.Markdown("""
+                dcc.Markdown(
+                    """
                     Similar to our projection, IPCC expects Global GHG emissions in 2030 associated with the implementation of Nationally Determined 
-                    Contributions (NDCs) announced before 26th UN Climate Change Conference to result global warming to exceed 1.5°C """
-                ,style={"margin": "2%"}
+                    Contributions (NDCs) announced before 26th UN Climate Change Conference to result global warming to exceed 1.5°C """,
+                    style={"margin": "2%"},
                 ),
                 dbc.RadioItems(
                     options=[
@@ -172,8 +189,7 @@ layout = html.Div(
                     id="projectionVal",
                     style={"margin": "2%"},
                 ),
-                
-                dcc.Graph(id="projection"),
+                dcc.Graph(id="projection", style={"height": "45vh"}),
                 dcc.Markdown(
                     """
                     The United Nations has many sub-organizations, and one of them is [The Intergovernmental Panel on Climate Change (IPCC)](https://www.ipcc.ch/). 
@@ -191,8 +207,6 @@ layout = html.Div(
                 ),
             ],
         ),
-        
-        
         dbc.Row(
             [
                 dbc.Col(
@@ -200,30 +214,27 @@ layout = html.Div(
                         "What you can do:",
                         dcc.Checklist(
                             [
-                                "Decrease car usage by x%",
-                            ],
-                            [
-                                "Decrease car usage by x%",
+                                "How long will you drive daily in minutes",
                             ],
                             id="car_check",
                         ),
                         dcc.Input(id="car_usage", min=0, max=100, value=5),
                         dcc.Checklist(
                             [
-                                "Cutting down the usage of lights by x%",
+                                "Cutting down electricity usage by x%",
                             ],
                             id="lights_check",
                         ),
                         dcc.Input(type="hidden", id="lights_usage", min=0, max=100),
                         dcc.Checklist(
                             [
-                                "Take less time in the shower",
+                                "You will shower for x minutes",
                             ],
                             id="shower_check",
                         ),
                         dcc.Input(type="hidden", id="shower_usage", min=0, max=100),
                     ],
-                    style={"margin":"2%" },
+                    style={"margin": "2%"},
                 ),
                 dbc.Col(
                     [
@@ -239,7 +250,7 @@ layout = html.Div(
                                 "South America",
                                 "World",
                             ],
-                            style={"margin": "6px","margin-top": "20px"},
+                            style={"margin": "6px", "margin-top": "20px"},
                             id="reduce_scope",
                             value="Just you",
                         ),
@@ -344,67 +355,76 @@ def compute_reduced_carbon(c1, c2, c3, u1, u2, u3, scope, percent):
     ans3 = 0
     if c1 != None and len(c1) != 0:
         if u1 != None:
-            ans1 = u1 / 100
+            ans1 = 48 - u1
     if c2 != None and len(c2) != 0:
         if u2 != None:
             ans2 = u2 / 100
     if c3 != None and len(c3) != 0:
         if u3 != None:
-            ans3 = u3 / 100
-    reduce1 = 0
-    reduce2 = 0
-    reduce3 = 0
-    if scope == "Just you":
-        reduce1 = 4.6 * 1e3
-        reduce2 = 2529 / 1000
-        reduce3 = 2.6 / 1000
-    elif scope == "You and your friends":
+            ans3 = 13 - u3
+    reduce1 = (4.6 * 10e3) / 48
+    reduce2 = 10632 * 0.527
+    reduce3 = 2.6 / 13 * 365
+    if scope == "You and your friends":
         if percent != None:
-            reduce1 = 4.6 * 1e3 * (percent + 1)
-            reduce2 = 2529 / 1000 * (percent + 1)
-            reduce3 = 2.6 / 1000 * (percent + 1)
+            reduce1 = reduce1 * (percent + 1)
+            reduce2 = reduce2 * (percent + 1)
+            reduce3 = reduce3 * (percent + 1)
     elif scope == "Nordics":
         if percent != None:
-            reduce1 = 4.6 * 1e3 * percent / 100 * nordic_population
-            reduce2 = 2529 / 1000 * percent / 100 * nordic_population
-            reduce3 = 2.6 / 1000 * percent / 100 * nordic_population
+            reduce1 = reduce1 * percent / 100 * nordic_population
+            reduce2 = reduce2 * percent / 100 * nordic_population
+            reduce3 = reduce3 * percent / 100 * nordic_population
     elif scope == "Europe":
         if percent != None:
-            reduce1 = 4.6 * 1e3 * percent / 100 * europe_population
-            reduce2 = 2529 / 1000 * percent / 100 * europe_population
-            reduce3 = 2.6 / 1000 * percent / 100 * europe_population
+            reduce1 = reduce1 * percent / 100 * europe_population
+            reduce2 = reduce2 * percent / 100 * europe_population
+            reduce3 = reduce3 * percent / 100 * europe_population
     elif scope == "Africa":
         if percent != None:
-            reduce1 = 4.6 * 1e3 * percent / 100 * africa_population
-            reduce2 = 2529 / 1000 * percent / 100 * africa_population
-            reduce3 = 2.6 / 1000 * percent / 100 * africa_population
+            reduce1 = reduce1 * percent / 100 * africa_population
+            reduce2 = reduce2 * percent / 100 * africa_population
+            reduce3 = reduce3 * percent / 100 * africa_population
     elif scope == "Asia":
         if percent != None:
-            reduce1 = 4.6 * 1e3 * percent / 100 * asia_population
-            reduce2 = 2529 / 1000 * percent / 100 * asia_population
-            reduce3 = 2.6 / 1000 * percent / 100 * asia_population
+            reduce1 = reduce1 * percent / 100 * asia_population
+            reduce2 = reduce2 * percent / 100 * asia_population
+            reduce3 = reduce3 * percent / 100 * asia_population
     elif scope == "North America":
         if percent != None:
-            reduce1 = 4.6 * 1e3 * percent / 100 * na_population
-            reduce2 = 2529 / 1000 * percent / 100 * na_population
-            reduce3 = 2.6 / 1000 * percent / 100 * na_population
+            reduce1 = reduce1 * percent / 100 * na_population
+            reduce2 = reduce2 * percent / 100 * na_population
+            reduce3 = reduce3 * percent / 100 * na_population
     elif scope == "South America":
         if percent != None:
-            reduce1 = 4.6 * 1e3 * percent / 100 * sa_population
-            reduce2 = 2529 / 1000 * percent / 100 * sa_population
-            reduce3 = 2.6 / 1000 * percent / 100 * sa_population
+            reduce1 = reduce1 * percent / 100 * sa_population
+            reduce2 = reduce2 * percent / 100 * sa_population
+            reduce3 = reduce3 * percent / 100 * sa_population
     elif scope == "World":
         if percent != None:
-            reduce1 = 4.6 * 1e3 * percent / 100 * world_population
-            reduce2 = 2529 / 1000 * percent / 100 * world_population
-            reduce3 = 2.6 / 1000 * percent / 100 * world_population
-    message = "We can reduce {:,.0f} tonnes of carbon dioxide per year".format(
-                reduce1 * ans1 + reduce2 * ans2 + reduce3 * ans3
+            reduce1 = reduce1 * percent / 100 * world_population
+            reduce2 = reduce2 * percent / 100 * world_population
+            reduce3 = reduce3 * percent / 100 * world_population
+    if scope == "Just you" or scope == "You and your friends":
+        message = "We can reduce {:,.0f} kgs  of carbon dioxide per year".format(
+            reduce1 * ans1 + reduce2 * ans2 + reduce3 * ans3
+        )
+    else:
+        if percent == None:
+            message = " "
+        else:
+            message = "We can reduce {:,.0f} tonnes of carbon dioxide per year".format(
+                reduce1 * ans1 / 1000 + reduce2 * ans2 / 1000 + reduce3 * ans3 / 1000
             )
     if scope != None:
-        return dcc.Markdown(""" 
+        return dcc.Markdown(
+            """ 
         ## {}
-        """.format(message),style = {"margin":"2%", "margin-bottom":"5vh"})
+        """.format(
+                message
+            ),
+            style={"margin": "2%", "margin-bottom": "5vh"},
+        )
     else:
         return []
 
