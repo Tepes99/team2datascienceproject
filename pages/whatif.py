@@ -140,7 +140,7 @@ layout = html.Div(
                 html.H1('Global CO2 emissions 5 year forecast', style = {"margin-top": "5%",'text-align':'center'}),
                 dcc.Graph(id ='emissions_forecast', figure=prediction_plot, style = {'margin-left':'2%',"height": "45vh"}),
                 dcc.Markdown("""
-                    Daniel write the explanation for forecast here and change the Mt to Gt
+                    The above graph provides a simple ARIMA(1,1,0) predictive model for global CO2 emissions timeseries. The grey area inidcates a confidence interval of 95%. As typical for a simple ARIMA forecast, the future predicted values quickly regress to the mean. The graph still provides some insight to how we can expect the trend to develop if emission remain as they have been in the past without much changes. Both the models predicted values for previous timepoints and the 5 year forecast are given to demonstrate the decent behaviour of the fitted model.
                     """
                 ,style={"margin": "2%"}
                 ),
