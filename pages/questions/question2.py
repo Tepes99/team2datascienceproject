@@ -11,6 +11,20 @@ layout = html.Div(
                         dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                         dbc.NavItem(dbc.NavLink("Future", href="whatif")),
                         dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                        dbc.DropdownMenu(
+                                children=[
+                                    dbc.DropdownMenuItem("Developer Team", header=True),
+                                    dbc.DropdownMenuItem("Daniel Aaltonen", href="https://github.com/Daalton3n"),
+                                    dbc.DropdownMenuItem("Dung Nguyen Anh", href="https://github.com/nguu0123"),
+                                    dbc.DropdownMenuItem("Hieu Pham", href="https://github.com/HieuPhamNgoc"),
+                                    dbc.DropdownMenuItem("Linh Ngo", href="https://github.com/linhlngo"),
+                                    dbc.DropdownMenuItem("Selin Taskin", href="https://github.com/selintaskin"),
+                                    dbc.DropdownMenuItem("Teemu Saha", href="https://github.com/Tepes99"),
+                                ],
+                                nav=True,
+                                in_navbar=True,
+                                label="Team",
+                        ),
                     ],
                     brand="Home",
                     brand_href="graphs",
@@ -22,6 +36,7 @@ layout = html.Div(
                 html.H1(
                     "Which of the following is a widely used policy to reduce global carbon emissions?",
                     className="question",
+                    style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"}
                 ),
                 html.Div(
                     [
@@ -69,10 +84,11 @@ def update_log(b1, b2, b3):
     if triggered_id == "ques2_first_button" or triggered_id == "ques2_second_button":
         return html.Div(
             [
-                html.H1("Not quite right", className="solution"),
+                html.H1("Not quite right", className="solution",style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"}),
                 html.H2(
                     "The first two certainly sound catchy, but neither is correct. Cap and trade is used to set maximum amount of emissions and permits are distributed for companies to trade or use",
                     className="fact",
+                    style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"}
                 ),
                 dcc.Link(
                     "Next question",
@@ -85,10 +101,11 @@ def update_log(b1, b2, b3):
     else:
         return html.Div(
             [
-                html.H1("You are right", className="solution"),
+                html.H1("You are right", className="solution",style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"}),
                 html.H2(
                     "The first two certainly sound catchy, but neither is correct. Cap and trade is used to set maximum amount of emissions and permits are distributed for companies to trade or use",
                     className="fact",
+                    style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"}
                 ),
                 dcc.Link(
                     "Next question",

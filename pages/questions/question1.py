@@ -11,6 +11,20 @@ layout = html.Div(
                         dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                         dbc.NavItem(dbc.NavLink("Future", href="whatif")),
                         dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master")),
+                        dbc.DropdownMenu(
+                                children=[
+                                    dbc.DropdownMenuItem("Developer Team", header=True),
+                                    dbc.DropdownMenuItem("Daniel Aaltonen", href="https://github.com/Daalton3n"),
+                                    dbc.DropdownMenuItem("Dung Nguyen Anh", href="https://github.com/nguu0123"),
+                                    dbc.DropdownMenuItem("Hieu Pham", href="https://github.com/HieuPhamNgoc"),
+                                    dbc.DropdownMenuItem("Linh Ngo", href="https://github.com/linhlngo"),
+                                    dbc.DropdownMenuItem("Selin Taskin", href="https://github.com/selintaskin"),
+                                    dbc.DropdownMenuItem("Teemu Saha", href="https://github.com/Tepes99"),
+                                ],
+                                nav=True,
+                                in_navbar=True,
+                                label="Team",
+                ),
                     ],
                     brand="Home",
                     brand_href="graphs",
@@ -23,6 +37,7 @@ layout = html.Div(
                 html.H1(
                     "What is the United Nations body for assessing the science related to climate change?",
                     className="question",
+                    style= {"textAlign":"center"}
                 ),
                 html.Div(
                     [
@@ -30,19 +45,19 @@ layout = html.Div(
                             "IPPD",
                             className="stuff",
                             id="first_button",
-                            style={"margin": "6px"},
+                            style={"margin-bottom": "6px"},
                         ),
                         html.Button(
                             "Y.M.C.A.",
                             className="stuff",
                             id="second_button",
-                            style={"margin": "6px"},
+                            style={"margin-bottom": "6px"},
                         ),
                         html.Button(
                             "IPCC",
                             className="stuff",
                             id="third_button",
-                            style={"margin": "6px"},
+                            style={"margin-bottom": "6px"},
                         ),
                     ],
                     className="answer_3",
@@ -70,10 +85,11 @@ def update_log(b1, b2, b3):
     if triggered_id == "first_button" or triggered_id == "second_button":
         return html.Div(
             [
-                html.H1("You are wrong", className="solution"),
+                html.H1("You are wrong", className="solution", style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"},),
                 html.H2(
                     "IPPD is used to make the rubber in tires and Y.M.C.A. is a song by American disco group Village People",
                     className="fact",
+                    style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"},
                 ),
                 dcc.Link(
                     "Next question",
@@ -86,16 +102,17 @@ def update_log(b1, b2, b3):
     else:
         return html.Div(
             [
-                html.H1("You are right", className="solution"),
+                html.H1("You are right", className="solution", style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"}),
                 html.H2(
                     "The Intergovernmental Panel on Climate Change (IPCC) is the United Nations body for assessing the science related to climate change.",
                     className="fact",
+                    style= {"textAlign":"center","margin-left": "37.5%", "margin-right": "37.5%"}
                 ),
                 dcc.Link(
                     "Next question",
                     href="/question2",
                     className="stuff next_button",
-                    style={"width": "25%", "justify-content":"center"},
+                    style= {"width": "25%", "justify-content":"center"},
                 ),
             ]
             
