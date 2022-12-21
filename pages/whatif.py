@@ -131,7 +131,7 @@ layout = html.Div(
                         dbc.NavItem(dbc.NavLink("Quiz", href="/..")),
                         dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                         dbc.NavItem(dbc.NavLink("Future", href="#")),
-                        dbc.NavItem(dbc.NavLink("GitHub",href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master",)),
+                        dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/Tepes99/team2datascienceproject/tree/main")),
                         dbc.DropdownMenu(
                                 children=[
                                     dbc.DropdownMenuItem("Developer Team", header=True),
@@ -296,7 +296,7 @@ layout = html.Div(
                 dbc.NavItem(dbc.NavLink("Quiz", href="/..")),
                 dbc.NavItem(dbc.NavLink("Home", href="graphs")),
                 dbc.NavItem(dbc.NavLink("Future", href="#")),
-                dbc.NavItem(dbc.NavLink("GitHub",href="https://github.com/HieuPhamNgoc/Data-Science-Project-Group-2/tree/master",)),
+                dbc.NavItem(dbc.NavLink("GitHub", href="https://github.com/Tepes99/team2datascienceproject/tree/main")),
                 dbc.DropdownMenu(
                                 children=[
                                     dbc.DropdownMenuItem("Developer Team", header=True),
