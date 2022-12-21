@@ -582,7 +582,7 @@ layout = html.Div(
                                     dbc.DropdownMenuItem("Hieu Pham", href="https://github.com/HieuPhamNgoc"),
                                     dbc.DropdownMenuItem("Linh Ngo", href="https://github.com/linhlngo"),
                                     dbc.DropdownMenuItem("Selin Taskin", href="https://github.com/selintaskin"),
-                                    dbc.DropdownMenuItem("Teemu Saha", href="https://github.com/Tepes99"),
+                                    dbc.DropdownMenuItem("Teemu Saha", href="https://linkedin.com/in/teemu-saha-18090b19b"),
                                 ],
                                 nav=True,
                                 in_navbar=True,
